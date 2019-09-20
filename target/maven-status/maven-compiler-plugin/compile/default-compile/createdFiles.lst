@@ -1,0 +1,12 @@
+com\rabbitcompany\admingui\AdminGUI.class
+com\rabbitcompany\admingui\MetricsLite$2.class
+com\rabbitcompany\admingui\MetricsLite$1.class
+com\rabbitcompany\admingui\commands\Admin.class
+com\rabbitcompany\admingui\MetricsLite.class
+com\rabbitcompany\admingui\utils\Utils.class
+com\rabbitcompany\admingui\XMaterial$MinecraftVersion.class
+com\rabbitcompany\admingui\ui\AdminUI.class
+com\rabbitcompany\admingui\XMaterial$1.class
+com\rabbitcompany\admingui\listeners\InventoryClickListener.class
+com\rabbitcompany\admingui\SpigotUpdater.class
+com\rabbitcompany\admingui\XMaterial.class

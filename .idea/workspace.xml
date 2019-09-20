@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="68fba916-2c46-44c3-b849-1655c59b9b44" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="downloadDocsAutomatically" value="true" />
+        <option name="downloadSourcesAutomatically" value="true" />
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1QYA89iHP7vChiUVoiCesrPLv5y" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="AdminGUI build" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="package" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="68fba916-2c46-44c3-b849-1655c59b9b44" name="Default Changelist" comment="" />
+      <created>1567936993220</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1567936993220</updated>
+      <workItem from="1567936997142" duration="16179000" />
+      <workItem from="1567954305069" duration="22470000" />
+      <workItem from="1568040573897" duration="24408000" />
+      <workItem from="1568125839661" duration="11834000" />
+      <workItem from="1568150962431" duration="193000" />
+      <workItem from="1568151288887" duration="822000" />
+      <workItem from="1568209341259" duration="17400000" />
+      <workItem from="1568311968177" duration="11182000" />
+      <workItem from="1568370665976" duration="3994000" />
+      <workItem from="1568385570883" duration="130000" />
+      <workItem from="1568385728304" duration="1365000" />
+      <workItem from="1568483466430" duration="17024000" />
+      <workItem from="1568547384169" duration="11458000" />
+      <workItem from="1568611654213" duration="1911000" />
+      <workItem from="1568613672509" duration="69000" />
+      <workItem from="1568614364153" duration="314000" />
+      <workItem from="1568615058539" duration="329000" />
+      <workItem from="1568660852898" duration="5139000" />
+      <workItem from="1568698082629" duration="1874000" />
+      <workItem from="1568700296606" duration="554000" />
+      <workItem from="1568732687891" duration="11694000" />
+      <workItem from="1568797145785" duration="3464000" />
+      <workItem from="1568815461756" duration="23185000" />
+      <workItem from="1568914449078" duration="6435000" />
+      <workItem from="1568963611593" duration="314000" />
+      <workItem from="1568964038877" duration="3128000" />
+      <workItem from="1568998325223" duration="8571000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>
