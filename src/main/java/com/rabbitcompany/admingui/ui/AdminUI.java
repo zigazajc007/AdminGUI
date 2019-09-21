@@ -3,6 +3,7 @@ package com.rabbitcompany.admingui.ui;
 import com.rabbitcompany.admingui.AdminGUI;
 import com.rabbitcompany.admingui.XMaterial;
 import com.rabbitcompany.admingui.utils.Utils;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -57,6 +58,10 @@ public class AdminUI {
     public static String inventory_spawner_name;
     public static int inv_spawner_rows = 6 * 9;
 
+    public static Inventory inv_inventory;
+    public static String inventory_inventory_name;
+    public static int inv_inventory_rows = 6 * 9;
+
     public static String target_player;
 
     private static int ban_years = 0;
@@ -91,6 +96,7 @@ public class AdminUI {
         inv_ban = Bukkit.createInventory(null, inv_ban_rows);
         inv_potions = Bukkit.createInventory(null, inv_potions_rows);
         inv_spawner = Bukkit.createInventory(null, inv_spawner_rows);
+        inv_inventory = Bukkit.createInventory(null, inv_inventory_rows);
     }
 
     public static Inventory GUI_Main(Player p){
@@ -412,6 +418,12 @@ public class AdminUI {
             Utils.createItem(inv_actions, "RED_STAINED_GLASS_PANE", 1, 27,  Utils.getMessage("permission"));
         }
 
+        if(p.hasPermission("admingui.inventory")) {
+            Utils.createItem(inv_actions, "BOOK", 1, 29, Utils.getMessage("actions_inventory"));
+        }else{
+            Utils.createItem(inv_actions, "RED_STAINED_GLASS_PANE", 1, 29,  Utils.getMessage("permission"));
+        }
+
         Utils.createItem(inv_actions, "REDSTONE_BLOCK", 1, 36, Utils.getMessage("actions_back"));
 
         toReturn.setContents(inv_actions.getContents());
@@ -712,6 +724,55 @@ public class AdminUI {
         return toReturn;
     }
 
+    public static Inventory GUI_Inventory(Player p, String target) {
+
+        inventory_inventory_name = Utils.getMessage("inventory_inventory").replace("{player}", target);
+        target_player = target;
+
+        Inventory toReturn = Bukkit.createInventory(null, inv_inventory_rows, inventory_inventory_name);
+
+        Player player_target = Bukkit.getServer().getPlayer(target);
+
+        if(player_target != null){
+
+            ItemStack[] items = player_target.getInventory().getContents();
+            ItemStack[] armor = player_target.getInventory().getArmorContents();
+
+            for(int i = 0; i < items.length; i++){
+                if(items[i] != null){
+                    String material = items[i].getType().toString();
+                    Utils.createItem(inv_inventory, material, items[i].getAmount(), i+1, WordUtils.capitalizeFully(material.replace("_", " ")));
+                }else{
+                    inv_inventory.setItem(i, null);
+                }
+            }
+
+            for (int i = 0, j = 37; i < armor.length; i++, j++){
+                if(armor[i] != null){
+                    String material = armor[i].getType().toString();
+                    Utils.createItem(inv_inventory, material, armor[i].getAmount(), j, WordUtils.capitalizeFully(material.replace("_", " ")));
+                }else{
+                    inv_inventory.setItem(0, null);
+                }
+            }
+        }else{
+            p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("message_player_not_found"));
+            p.closeInventory();
+        }
+
+        for (int i = 42; i < 54; i++){
+            Utils.createItem(inv_inventory, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+        }
+
+        Utils.createItem(inv_inventory, "GREEN_TERRACOTTA", 1, 46, Utils.getMessage("inventory_refresh"));
+
+        Utils.createItem(inv_inventory, "REDSTONE_BLOCK", 1, 54, Utils.getMessage("inventory_back"));
+
+        toReturn.setContents(inv_inventory.getContents());
+
+        return toReturn;
+    }
+
     public static void clicked_main(Player p, int slot, ItemStack clicked, Inventory inv){
 
         if(Utils.getClickedItem(clicked, Utils.getMessage("main_quit"))){
@@ -722,20 +783,25 @@ public class AdminUI {
             p.openInventory(GUI_World(p));
         }else if(Utils.getClickedItem(clicked,Utils.getMessage("main_players"))){
             p.openInventory(GUI_Players(p));
-        }else if(Utils.getClickedItem(clicked, Utils.getMessage("main_maintenance_mode"))){
-            if(maintenance_mode){
-                maintenance_mode = false;
-                p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("message_maintenance_disabled"));
-                p.closeInventory();
-            }else{
-                maintenance_mode = true;
-                p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("message_maintenance_enabled"));
-                p.closeInventory();
-                for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
-                    if (!pl.isOp() && !pl.hasPermission("admingui.maintenance")) {
-                        pl.kickPlayer(Utils.getMessage("prefix") + Utils.getMessage("message_maintenance"));
+        }else if(Utils.getClickedItem(clicked, Utils.getMessage("main_maintenance_mode"))) {
+            if(p.hasPermission("admingui.maintenance.manage")){
+                if (maintenance_mode) {
+                    maintenance_mode = false;
+                    p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("message_maintenance_disabled"));
+                    p.closeInventory();
+                } else {
+                    maintenance_mode = true;
+                    p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("message_maintenance_enabled"));
+                    p.closeInventory();
+                    for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
+                        if (!pl.isOp() && !pl.hasPermission("admingui.maintenance")) {
+                            pl.kickPlayer(Utils.getMessage("prefix") + Utils.getMessage("message_maintenance"));
+                        }
                     }
                 }
+            }else{
+                p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("permission"));
+                p.closeInventory();
             }
         }
 
@@ -919,6 +985,8 @@ public class AdminUI {
                 p.openInventory(GUI_Actions(p,target_player.getName()));
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("actions_potions"))){
                 p.openInventory(GUI_Potions(p, target_player.getName()));
+            }else if(Utils.getClickedItem(clicked, Utils.getMessage("actions_inventory"))){
+                p.openInventory(GUI_Inventory(p, target_player.getName()));
             }
         }else{
             p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("message_player_not_found"));
@@ -1438,13 +1506,13 @@ public class AdminUI {
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_dolphin"))){
                 Utils.spawnEntity(target_player.getLocation(), EntityType.DOLPHIN);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_donkey"))){
-                Utils.spawnEntity(target_player.getLocation(), EntityType.DOLPHIN);
+                Utils.spawnEntity(target_player.getLocation(), EntityType.DONKEY);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_drowned"))){
                 Utils.spawnEntity(target_player.getLocation(), EntityType.DROWNED);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_elder_guardian"))){
                 Utils.spawnEntity(target_player.getLocation(), EntityType.ELDER_GUARDIAN);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_enderman"))){
-                Utils.spawnEntity(target_player.getLocation(), EntityType.ELDER_GUARDIAN);
+                Utils.spawnEntity(target_player.getLocation(), EntityType.ENDERMAN);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_endermite"))){
                 Utils.spawnEntity(target_player.getLocation(), EntityType.ENDERMITE);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_evoker"))){
@@ -1502,8 +1570,6 @@ public class AdminUI {
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_slime"))){
                 Utils.spawnEntity(target_player.getLocation(), EntityType.SLIME);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_spider"))){
-                Utils.spawnEntity(target_player.getLocation(), EntityType.SLIME);
-            }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_spider"))){
                 Utils.spawnEntity(target_player.getLocation(), EntityType.SPIDER);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_squid"))){
                 Utils.spawnEntity(target_player.getLocation(), EntityType.SQUID);
@@ -1529,6 +1595,21 @@ public class AdminUI {
                 Utils.spawnEntity(target_player.getLocation(), EntityType.ZOMBIE);
             }else if(Utils.getClickedItem(clicked, Utils.getMessage("spawner_zombie_pigman"))){
                 Utils.spawnEntity(target_player.getLocation(), EntityType.PIG_ZOMBIE);
+            }
+        }else{
+            p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("message_player_not_found"));
+            p.closeInventory();
+        }
+    }
+
+    public static void clicked_inventory(Player p, int slot, ItemStack clicked, Inventory inv, String title){
+        Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+
+        if(target_player != null){
+            if(Utils.getClickedItem(clicked, Utils.getMessage("inventory_back"))){
+                p.openInventory(GUI_Actions(p, target_player.getName()));
+            }else if(Utils.getClickedItem(clicked, Utils.getMessage("inventory_refresh"))){
+                p.openInventory(GUI_Inventory(p, target_player.getName()));
             }
         }else{
             p.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("message_player_not_found"));

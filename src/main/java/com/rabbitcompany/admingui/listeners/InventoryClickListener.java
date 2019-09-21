@@ -24,7 +24,7 @@ public class InventoryClickListener implements Listener {
     public void onClick(InventoryClickEvent e){
         String title = e.getView().getTitle();
 
-        if(title.equals(AdminUI.inventory_main_name) || title.equals(AdminUI.inventory_player_name) || title.equals(AdminUI.inventory_world_name) || title.equals(AdminUI.inventory_players_name) || title.equals(AdminUI.inventory_players_settings_name) || title.equals(AdminUI.inventory_actions_name) || title.equals(AdminUI.inventory_kick_name) || title.equals(AdminUI.inventory_ban_name) || title.equals(AdminUI.inventory_potions_name) || title.equals(AdminUI.inventory_spawner_name)){
+        if(title.equals(AdminUI.inventory_main_name) || title.equals(AdminUI.inventory_player_name) || title.equals(AdminUI.inventory_world_name) || title.equals(AdminUI.inventory_players_name) || title.equals(AdminUI.inventory_players_settings_name) || title.equals(AdminUI.inventory_actions_name) || title.equals(AdminUI.inventory_kick_name) || title.equals(AdminUI.inventory_ban_name) || title.equals(AdminUI.inventory_potions_name) || title.equals(AdminUI.inventory_spawner_name) || title.equals(AdminUI.inventory_inventory_name)){
             e.setCancelled(true);
 
             if(title.equals(AdminUI.inventory_main_name)){
@@ -82,6 +82,11 @@ public class InventoryClickListener implements Listener {
 
                 if(e.getCurrentItem() != null){
                     AdminUI.clicked_spawner((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory(), AdminUI.target_player);
+                }
+            }else if(title.equals(AdminUI.inventory_inventory_name)){
+
+                if(e.getCurrentItem() != null){
+                    AdminUI.clicked_inventory((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory(), AdminUI.target_player);
                 }
             }
         }

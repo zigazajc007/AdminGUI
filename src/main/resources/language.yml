@@ -55,6 +55,7 @@ inventory_kick: "&8&lKick &2&l{player}"
 inventory_ban: "&8&lBan &2&l{player}"
 inventory_potions: "&c&lPotions &2&l{player}"
 inventory_spawner: "&8&lSpawner &2&l{player}"
+inventory_inventory: "&a&lInventory &2&l{player}"
 #----------------------------------------------------------
 #                       Admin GUI
 #----------------------------------------------------------
@@ -123,6 +124,7 @@ actions_teleport_player_to_you: "&d&lTeleport player to you"
 actions_god_enabled: "&a&lGod"
 actions_god_disabled: "&c&lGod"
 actions_potions: "&c&lPotions"
+actions_inventory: "&a&lInventory"
 actions_back: "&c&lBack"
 #----------------------------------------------------------
 #                       Kick GUI
@@ -233,6 +235,11 @@ spawner_zombie: "&c&lZombie"
 spawner_zombie_pigman: "&c&lZombie Pigman"
 spawner_zombie_villager: "&c&lZombie Villager"
 spawner_back: "&c&lBack"
+#----------------------------------------------------------
+#                    Inventory GUI
+#----------------------------------------------------------
+inventory_refresh: "&a&lRefresh"
+inventory_back: "&c&lBack"
 #----------------------------------------------------------
 #                       Messages
 #----------------------------------------------------------
