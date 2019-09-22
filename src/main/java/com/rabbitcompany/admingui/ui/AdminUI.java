@@ -17,49 +17,49 @@ import java.util.Date;
 
 public class AdminUI {
     
-    public static Inventory inv_main;
+    private static Inventory inv_main;
     public static String inventory_main_name;
-    public static int inv_main_rows = 3 * 9;
+    private static int inv_main_rows = 3 * 9;
 
-    public static Inventory inv_player;
+    private static Inventory inv_player;
     public static String inventory_player_name;
-    public static int inv_player_rows = 1 * 9;
+    private static int inv_player_rows = 1 * 9;
 
-    public static Inventory inv_world;
+    private static Inventory inv_world;
     public static String inventory_world_name;
-    public static int inv_world_rows = 3 * 9;
+    private static int inv_world_rows = 3 * 9;
 
-    public static Inventory inv_players;
+    private static Inventory inv_players;
     public static String inventory_players_name;
-    public static int inv_players_rows = 6 * 9;
+    private static int inv_players_rows = 6 * 9;
 
-    public static Inventory inv_players_settings;
+    private static Inventory inv_players_settings;
     public static String inventory_players_settings_name;
-    public static int inv_players_settings_rows = 3 * 9;
+    private static int inv_players_settings_rows = 3 * 9;
 
-    public static Inventory inv_actions;
+    private static Inventory inv_actions;
     public static String inventory_actions_name;
-    public static int inv_actions_rows = 4 * 9;
+    private static int inv_actions_rows = 4 * 9;
 
-    public static Inventory inv_kick;
+    private static Inventory inv_kick;
     public static String inventory_kick_name;
-    public static int inv_kick_rows = 3 * 9;
+    private static int inv_kick_rows = 3 * 9;
 
-    public static Inventory inv_ban;
+    private static Inventory inv_ban;
     public static String inventory_ban_name;
-    public static int inv_ban_rows = 4 * 9;
+    private static int inv_ban_rows = 4 * 9;
 
-    public static Inventory inv_potions;
+    private static Inventory inv_potions;
     public static String inventory_potions_name;
-    public static int inv_potions_rows = 4 * 9;
+    private static int inv_potions_rows = 4 * 9;
 
-    public static Inventory inv_spawner;
+    private static Inventory inv_spawner;
     public static String inventory_spawner_name;
-    public static int inv_spawner_rows = 6 * 9;
+    private static int inv_spawner_rows = 6 * 9;
 
-    public static Inventory inv_inventory;
+    private static Inventory inv_inventory;
     public static String inventory_inventory_name;
-    public static int inv_inventory_rows = 6 * 9;
+    private static int inv_inventory_rows = 6 * 9;
 
     public static String target_player;
 
@@ -740,7 +740,11 @@ public class AdminUI {
             for(int i = 0; i < items.length; i++){
                 if(items[i] != null){
                     String material = items[i].getType().toString();
-                    Item.create(inv_inventory, material, items[i].getAmount(), i+1, WordUtils.capitalizeFully(material.replace("_", " ")));
+                    if(items[i].getItemMeta().hasDisplayName()){
+                        Item.create(inv_inventory, material, items[i].getAmount(), i+1, items[i].getItemMeta().getDisplayName());
+                    }else{
+                        Item.create(inv_inventory, material, items[i].getAmount(), i+1, WordUtils.capitalizeFully(material.replace("_", " ")));
+                    }
                 }else{
                     inv_inventory.setItem(i, null);
                 }
@@ -749,9 +753,13 @@ public class AdminUI {
             for (int i = 0, j = 37; i < armor.length; i++, j++){
                 if(armor[i] != null){
                     String material = armor[i].getType().toString();
-                    Item.create(inv_inventory, material, armor[i].getAmount(), j, WordUtils.capitalizeFully(material.replace("_", " ")));
+                    if(armor[i].getItemMeta().hasDisplayName()){
+                        Item.create(inv_inventory, material, armor[i].getAmount(), j, armor[i].getItemMeta().getDisplayName());
+                    }else {
+                        Item.create(inv_inventory, material, armor[i].getAmount(), j, WordUtils.capitalizeFully(material.replace("_", " ")));
+                    }
                 }else{
-                    inv_inventory.setItem(0, null);
+                    inv_inventory.setItem(j, null);
                 }
             }
         }else{
