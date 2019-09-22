@@ -2,10 +2,11 @@ package com.rabbitcompany.admingui;
 
 import com.rabbitcompany.admingui.commands.Admin;
 import com.rabbitcompany.admingui.listeners.InventoryClickListener;
+import com.rabbitcompany.admingui.listeners.PlayerJoinListener;
 import com.rabbitcompany.admingui.ui.AdminUI;
-import com.rabbitcompany.admingui.utils.Utils;
+import com.rabbitcompany.admingui.utils.Message;
+import com.rabbitcompany.admingui.utils.Updater;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -32,31 +33,29 @@ public class AdminGUI extends JavaPlugin {
         mkdir();
         loadYamls();
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&cAdmin GUI&7] &aPlugin is enabled!"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&7[&cAdmin GUI&7] &aPlugin is enabled!"));
 
+        //bStats
         MetricsLite metricsLite = new MetricsLite(this);
+        //Updater
         updater = new SpigotUpdater(this, 71157);
 
-        try {
-            if (updater.checkForUpdates()) {
-                Bukkit.getConsoleSender().sendMessage(Utils.chat("&7[&cAdmin GUI&7] &aAn update was found!"));
-                Bukkit.getConsoleSender().sendMessage(Utils.chat("&7[&cAdmin GUI&7] &aNew version: &b" + updater.getLatestVersion()));
-                Bukkit.getConsoleSender().sendMessage(Utils.chat("&7[&cAdmin GUI&7] &aDownload: &b" + updater.getResourceURL()));
-            }
-        } catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&cAdmin GUI&7] &cCould not check for updates!"));
-        }
+        //Check for updates
+        Updater.sendConsole();
 
+        //Listeners
         new InventoryClickListener(this);
+        new PlayerJoinListener(this);
 
         AdminUI.initialize();
 
+        //Commands
         this.getCommand("admin").setExecutor((CommandExecutor) new Admin());
     }
 
     @Override
     public void onDisable() {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&cAdmin GUI&7] &4Plugin is disabled!"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&7[&cAdmin GUI&7] &4Plugin is disabled!"));
     }
 
     private void mkdir(){

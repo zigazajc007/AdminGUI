@@ -1,7 +1,7 @@
 package com.rabbitcompany.admingui.commands;
 
 import com.rabbitcompany.admingui.ui.AdminUI;
-import com.rabbitcompany.admingui.utils.Utils;
+import com.rabbitcompany.admingui.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,13 +31,13 @@ public class Admin implements CommandExecutor {
                             player.openInventory(AdminUI.GUI_Players_Settings(player, target_player));
                         }
                     }else{
-                        player.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("is_not_a_player").replace("{player}", args[0]));
+                        player.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_player").replace("{player}", args[0]));
                     }
             }else{
-                player.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("wrong_arguments"));
+                player.sendMessage(Message.getMessage("prefix") + Message.getMessage("wrong_arguments"));
             }
         }else{
-            player.sendMessage(Utils.getMessage("prefix") + Utils.getMessage("permission"));
+            player.sendMessage(Message.getMessage("prefix") + Message.getMessage("permission"));
         }
 
         return true;

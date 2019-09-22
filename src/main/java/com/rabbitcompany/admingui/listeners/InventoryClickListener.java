@@ -2,13 +2,11 @@ package com.rabbitcompany.admingui.listeners;
 
 import com.rabbitcompany.admingui.AdminGUI;
 import com.rabbitcompany.admingui.ui.AdminUI;
-import com.rabbitcompany.admingui.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 public class InventoryClickListener implements Listener {
 
@@ -91,25 +89,4 @@ public class InventoryClickListener implements Listener {
             }
         }
     }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
-
-        if(AdminUI.maintenance_mode && !event.getPlayer().hasPermission("admingui.maintenance")){
-            event.getPlayer().kickPlayer(Utils.getMessage("prefix") + Utils.getMessage("message_maintenance"));
-        }
-
-        if(event.getPlayer().hasPermission("admingui.admin") || event.getPlayer().isOp()){
-            try {
-                if (AdminGUI.updater.checkForUpdates()) {
-                    event.getPlayer().sendMessage(Utils.chat("&7[&cAdmin GUI&7] &aAn update was found!"));
-                    event.getPlayer().sendMessage(Utils.chat("&7[&cAdmin GUI&7] &aNew version: &b" + AdminGUI.updater.getLatestVersion()));
-                    event.getPlayer().sendMessage(Utils.chat("&7[&cAdmin GUI&7] &aDownload: &b" + AdminGUI.updater.getResourceURL()));
-                }
-            } catch (Exception e) {
-                event.getPlayer().sendMessage(Utils.chat("&7[&cAdmin GUI&7] &cCould not check for updates!"));
-            }
-        }
-    }
-
 }
