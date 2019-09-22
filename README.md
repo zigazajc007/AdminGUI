@@ -1,2 +1,3 @@
-# Admin-GUI
- Easy manage your Minecraft server with Admin GUI
+<p align="center">
+  <img src="https://www.spigotmc.org/attachments/admingui-png.457389/">
+</p>
