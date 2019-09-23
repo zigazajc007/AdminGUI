@@ -1,6 +1,5 @@
 package com.rabbitcompany.admingui.ui;
 
-import com.rabbitcompany.admingui.AdminGUI;
 import com.rabbitcompany.admingui.utils.*;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
@@ -19,47 +18,47 @@ public class AdminUI {
     
     private static Inventory inv_main;
     public static String inventory_main_name;
-    private static int inv_main_rows = 3 * 9;
+    private static int inv_main_rows = 27;
 
     private static Inventory inv_player;
     public static String inventory_player_name;
-    private static int inv_player_rows = 1 * 9;
+    private static int inv_player_rows = 9;
 
     private static Inventory inv_world;
     public static String inventory_world_name;
-    private static int inv_world_rows = 3 * 9;
+    private static int inv_world_rows = 27;
 
     private static Inventory inv_players;
     public static String inventory_players_name;
-    private static int inv_players_rows = 6 * 9;
+    private static int inv_players_rows = 54;
 
     private static Inventory inv_players_settings;
     public static String inventory_players_settings_name;
-    private static int inv_players_settings_rows = 3 * 9;
+    private static int inv_players_settings_rows = 27;
 
     private static Inventory inv_actions;
     public static String inventory_actions_name;
-    private static int inv_actions_rows = 4 * 9;
+    private static int inv_actions_rows = 36;
 
     private static Inventory inv_kick;
     public static String inventory_kick_name;
-    private static int inv_kick_rows = 3 * 9;
+    private static int inv_kick_rows = 27;
 
     private static Inventory inv_ban;
     public static String inventory_ban_name;
-    private static int inv_ban_rows = 4 * 9;
+    private static int inv_ban_rows = 36;
 
     private static Inventory inv_potions;
     public static String inventory_potions_name;
-    private static int inv_potions_rows = 4 * 9;
+    private static int inv_potions_rows = 36;
 
     private static Inventory inv_spawner;
     public static String inventory_spawner_name;
-    private static int inv_spawner_rows = 6 * 9;
+    private static int inv_spawner_rows = 54;
 
     private static Inventory inv_inventory;
     public static String inventory_inventory_name;
-    private static int inv_inventory_rows = 6 * 9;
+    private static int inv_inventory_rows = 54;
 
     public static String target_player;
 
@@ -76,8 +75,6 @@ public class AdminUI {
     public static int level = 1;
 
     public static boolean maintenance_mode = false;
-
-    private static AdminGUI adminGUI;
 
     public static void initialize(){
 
@@ -220,11 +217,11 @@ public class AdminUI {
 
         if(p.hasPermission("admingui.weather")) {
             if (p.getPlayer().getWorld().isThundering()) {
-                Item.create(inv_world, "BLUE_CONCRETE", 1, 13, Message.getMessage("world_thunder"));
+                Item.create(inv_world, " BLUE_TERRACOTTA", 1, 13, Message.getMessage("world_thunder"));
             } else if (p.getPlayer().getWorld().hasStorm()) {
-                Item.create(inv_world, "CYAN_CONCRETE", 1, 13, Message.getMessage("world_rain"));
+                Item.create(inv_world, "CYAN_TERRACOTTA", 1, 13, Message.getMessage("world_rain"));
             } else {
-                Item.create(inv_world, "LIGHT_BLUE_CONCRETE", 1, 13, Message.getMessage("world_clear"));
+                Item.create(inv_world, "LIGHT_BLUE_TERRACOTTA", 1, 13, Message.getMessage("world_clear"));
             }
         }else{
             Item.create(inv_world, "RED_STAINED_GLASS_PANE", 1, 13,  Message.getMessage("permission"));
@@ -314,7 +311,7 @@ public class AdminUI {
         }
 
         if(p.hasPermission("admingui.kick.other")) {
-            Item.create(inv_players_settings, "BLACK_CONCRETE", 1, 15, Message.getMessage("players_settings_kick_player"));
+            Item.create(inv_players_settings, "BLACK_TERRACOTTA", 1, 15, Message.getMessage("players_settings_kick_player"));
         }else{
             Item.create(inv_players_settings, "RED_STAINED_GLASS_PANE", 1, 15,  Message.getMessage("permission"));
         }
@@ -520,36 +517,17 @@ public class AdminUI {
         }
 
         if (Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.13")) {
-            Item.create(inv_potions, "POTION", 1, 1, Message.getMessage("potions_night_vision"));
-            Item.create(inv_potions, "POTION", 1, 2, Message.getMessage("potions_invisibility"));
-            Item.create(inv_potions, "POTION", 1, 3, Message.getMessage("potions_jump_boost"));
-            Item.create(inv_potions, "POTION", 1, 4, Message.getMessage("potions_fire_resistance"));
-            Item.create(inv_potions, "POTION", 1, 5, Message.getMessage("potions_speed"));
-            Item.create(inv_potions, "POTION", 1, 6, Message.getMessage("potions_slowness"));
-            Item.create(inv_potions, "POTION", 1, 7, Message.getMessage("potions_water_breathing"));
-            Item.create(inv_potions, "POTION", 1, 8, Message.getMessage("potions_instant_health"));
-            Item.create(inv_potions, "POTION", 1, 9, Message.getMessage("potions_instant_damage"));
-            Item.create(inv_potions, "POTION", 1, 10, Message.getMessage("potions_poison"));
-            Item.create(inv_potions, "POTION", 1, 11, Message.getMessage("potions_regeneration"));
-            Item.create(inv_potions, "POTION", 1, 12, Message.getMessage("potions_strength"));
-            Item.create(inv_potions, "POTION", 1, 13, Message.getMessage("potions_weakness"));
-            Item.create(inv_potions, "POTION", 1, 14, Message.getMessage("potions_luck"));
-            Item.create(inv_potions, "POTION", 1, 15, Message.getMessage("potions_slow_falling"));
-        }else if(Bukkit.getVersion().contains("1.12")){
-            Item.create(inv_potions, "POTION", 1, 1, Message.getMessage("potions_night_vision"));
-            Item.create(inv_potions, "POTION", 1, 2, Message.getMessage("potions_invisibility"));
-            Item.create(inv_potions, "POTION", 1, 3, Message.getMessage("potions_jump_boost"));
-            Item.create(inv_potions, "POTION", 1, 4, Message.getMessage("potions_fire_resistance"));
-            Item.create(inv_potions, "POTION", 1, 5, Message.getMessage("potions_speed"));
-            Item.create(inv_potions, "POTION", 1, 6, Message.getMessage("potions_slowness"));
-            Item.create(inv_potions, "POTION", 1, 7, Message.getMessage("potions_water_breathing"));
-            Item.create(inv_potions, "POTION", 1, 8, Message.getMessage("potions_instant_health"));
-            Item.create(inv_potions, "POTION", 1, 9, Message.getMessage("potions_instant_damage"));
-            Item.create(inv_potions, "POTION", 1, 10, Message.getMessage("potions_poison"));
-            Item.create(inv_potions, "POTION", 1, 11, Message.getMessage("potions_regeneration"));
-            Item.create(inv_potions, "POTION", 1, 12, Message.getMessage("potions_strength"));
-            Item.create(inv_potions, "POTION", 1, 13, Message.getMessage("potions_weakness"));
-            Item.create(inv_potions, "POTION", 1, 14, Message.getMessage("potions_luck"));
+
+            for(Potions.Version_14 potion : Potions.Version_14.values()){
+                Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
+            }
+
+        }else if(Bukkit.getVersion().contains("1.12") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.10")){
+
+            for(Potions.Version_12 potion : Potions.Version_12.values()){
+                Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
+            }
+
         }
 
         Item.create(inv_potions, "CLOCK", duration, 31, Message.getMessage("potions_time"));
@@ -571,149 +549,25 @@ public class AdminUI {
         Inventory toReturn = Bukkit.createInventory(null, inv_spawner_rows, inventory_spawner_name);
 
         if (Bukkit.getVersion().contains("1.14")) {
-            Item.create(inv_spawner, "BAT_SPAWN_EGG", 1, 1, Message.getMessage("spawner_bat"));
-            Item.create(inv_spawner, "BLAZE_SPAWN_EGG", 1, 2, Message.getMessage("spawner_blaze"));
-            Item.create(inv_spawner, "CAT_SPAWN_EGG", 1, 3, Message.getMessage("spawner_cat"));
-            Item.create(inv_spawner, "CAVE_SPIDER_SPAWN_EGG", 1, 4, Message.getMessage("spawner_cave_spider"));
-            Item.create(inv_spawner, "CHICKEN_SPAWN_EGG", 1, 5, Message.getMessage("spawner_chicken"));
-            Item.create(inv_spawner, "COD_SPAWN_EGG", 1, 6, Message.getMessage("spawner_cod"));
-            Item.create(inv_spawner, "COW_SPAWN_EGG", 1, 7, Message.getMessage("spawner_cow"));
-            Item.create(inv_spawner, "CREEPER_SPAWN_EGG", 1, 8, Message.getMessage("spawner_creeper"));
-            Item.create(inv_spawner, "DOLPHIN_SPAWN_EGG", 1, 9, Message.getMessage("spawner_dolphin"));
-            Item.create(inv_spawner, "DONKEY_SPAWN_EGG", 1, 10, Message.getMessage("spawner_donkey"));
-            Item.create(inv_spawner, "DROWNED_SPAWN_EGG", 1, 11, Message.getMessage("spawner_drowned"));
-            Item.create(inv_spawner, "ELDER_GUARDIAN_SPAWN_EGG", 1, 12, Message.getMessage("spawner_elder_guardian"));
-            Item.create(inv_spawner, "ENDERMAN_SPAWN_EGG", 1, 13, Message.getMessage("spawner_enderman"));
-            Item.create(inv_spawner, "ENDERMITE_SPAWN_EGG", 1, 14, Message.getMessage("spawner_endermite"));
-            Item.create(inv_spawner, "EVOKER_SPAWN_EGG", 1, 15, Message.getMessage("spawner_evoker"));
-            Item.create(inv_spawner, "FOX_SPAWN_EGG", 1, 16, Message.getMessage("spawner_fox"));
-            Item.create(inv_spawner, "GHAST_SPAWN_EGG", 1, 17, Message.getMessage("spawner_ghast"));
-            Item.create(inv_spawner, "GUARDIAN_SPAWN_EGG", 1, 18, Message.getMessage("spawner_guardian"));
-            Item.create(inv_spawner, "HORSE_SPAWN_EGG", 1, 19, Message.getMessage("spawner_horse"));
-            Item.create(inv_spawner, "HUSK_SPAWN_EGG", 1, 20, Message.getMessage("spawner_husk"));
-            Item.create(inv_spawner, "LLAMA_SPAWN_EGG", 1, 21, Message.getMessage("spawner_llama"));
-            Item.create(inv_spawner, "MAGMA_CUBE_SPAWN_EGG", 1, 22, Message.getMessage("spawner_magma_cube"));
-            Item.create(inv_spawner, "MOOSHROOM_SPAWN_EGG", 1, 23, Message.getMessage("spawner_mooshroom"));
-            Item.create(inv_spawner, "MULE_SPAWN_EGG", 1, 24, Message.getMessage("spawner_mule"));
-            Item.create(inv_spawner, "OCELOT_SPAWN_EGG", 1, 25, Message.getMessage("spawner_ocelot"));
-            Item.create(inv_spawner, "PANDA_SPAWN_EGG", 1, 26, Message.getMessage("spawner_panda"));
-            Item.create(inv_spawner, "PARROT_SPAWN_EGG", 1, 27, Message.getMessage("spawner_parrot"));
-            Item.create(inv_spawner, "PHANTOM_SPAWN_EGG", 1, 28, Message.getMessage("spawner_phantom"));
-            Item.create(inv_spawner, "PIG_SPAWN_EGG", 1, 29, Message.getMessage("spawner_pig"));
-            Item.create(inv_spawner, "PILLAGER_SPAWN_EGG", 1, 30, Message.getMessage("spawner_pillager"));
-            Item.create(inv_spawner, "POLAR_BEAR_SPAWN_EGG", 1, 31, Message.getMessage("spawner_polar_bear"));
-            Item.create(inv_spawner, "PUFFERFISH_SPAWN_EGG", 1, 32, Message.getMessage("spawner_pufferfish"));
-            Item.create(inv_spawner, "RABBIT_SPAWN_EGG", 1, 33, Message.getMessage("spawner_rabbit"));
-            Item.create(inv_spawner, "RAVAGER_SPAWN_EGG", 1, 34, Message.getMessage("spawner_ravager"));
-            Item.create(inv_spawner, "SALMON_SPAWN_EGG", 1, 35, Message.getMessage("spawner_salmon"));
-            Item.create(inv_spawner, "SHEEP_SPAWN_EGG", 1, 36, Message.getMessage("spawner_sheep"));
-            Item.create(inv_spawner, "SHULKER_SPAWN_EGG", 1, 37, Message.getMessage("spawner_shulker"));
-            Item.create(inv_spawner, "SILVERFISH_SPAWN_EGG", 1, 38, Message.getMessage("spawner_silverfish"));
-            Item.create(inv_spawner, "SKELETON_SPAWN_EGG", 1, 39, Message.getMessage("spawner_skeleton"));
-            Item.create(inv_spawner, "SKELETON_HORSE_SPAWN_EGG", 1, 40, Message.getMessage("spawner_skeleton_horse"));
-            Item.create(inv_spawner, "SLIME_SPAWN_EGG", 1, 41, Message.getMessage("spawner_slime"));
-            Item.create(inv_spawner, "SPIDER_SPAWN_EGG", 1, 42, Message.getMessage("spawner_spider"));
-            Item.create(inv_spawner, "SQUID_SPAWN_EGG", 1, 43, Message.getMessage("spawner_squid"));
-            Item.create(inv_spawner, "STRAY_SPAWN_EGG", 1, 44, Message.getMessage("spawner_stray"));
-            Item.create(inv_spawner, "TROPICAL_FISH_SPAWN_EGG", 1, 45, Message.getMessage("spawner_tropical_fish"));
-            Item.create(inv_spawner, "TURTLE_SPAWN_EGG", 1, 46, Message.getMessage("spawner_turtle"));
-            Item.create(inv_spawner, "VEX_SPAWN_EGG", 1, 47, Message.getMessage("spawner_vex"));
-            Item.create(inv_spawner, "VILLAGER_SPAWN_EGG", 1, 48, Message.getMessage("spawner_villager"));
-            Item.create(inv_spawner, "VINDICATOR_SPAWN_EGG", 1, 49, Message.getMessage("spawner_vindicator"));
-            Item.create(inv_spawner, "WITCH_SPAWN_EGG", 1, 50, Message.getMessage("spawner_witch"));
-            Item.create(inv_spawner, "WOLF_SPAWN_EGG", 1, 51, Message.getMessage("spawner_wolf"));
-            Item.create(inv_spawner, "ZOMBIE_SPAWN_EGG", 1, 52, Message.getMessage("spawner_zombie"));
-            Item.create(inv_spawner, "ZOMBIE_PIGMAN_SPAWN_EGG", 1, 53, Message.getMessage("spawner_zombie_pigman"));
+            for(Spawners.Material_Version_14 material : Spawners.Material_Version_14.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_14.values()[material.ordinal()].name()));
+            }
         }else if(Bukkit.getVersion().contains("1.13")){
-            Item.create(inv_spawner, "BAT_SPAWN_EGG", 1, 1, Message.getMessage("spawner_bat"));
-            Item.create(inv_spawner, "BLAZE_SPAWN_EGG", 1, 2, Message.getMessage("spawner_blaze"));
-            Item.create(inv_spawner, "CAVE_SPIDER_SPAWN_EGG", 1, 3, Message.getMessage("spawner_cave_spider"));
-            Item.create(inv_spawner, "CHICKEN_SPAWN_EGG", 1, 4, Message.getMessage("spawner_chicken"));
-            Item.create(inv_spawner, "COD_SPAWN_EGG", 1, 5, Message.getMessage("spawner_cod"));
-            Item.create(inv_spawner, "COW_SPAWN_EGG", 1, 6, Message.getMessage("spawner_cow"));
-            Item.create(inv_spawner, "CREEPER_SPAWN_EGG", 1, 7, Message.getMessage("spawner_creeper"));
-            Item.create(inv_spawner, "DOLPHIN_SPAWN_EGG", 1, 8, Message.getMessage("spawner_dolphin"));
-            Item.create(inv_spawner, "DONKEY_SPAWN_EGG", 1, 9, Message.getMessage("spawner_donkey"));
-            Item.create(inv_spawner, "DROWNED_SPAWN_EGG", 1, 10, Message.getMessage("spawner_drowned"));
-            Item.create(inv_spawner, "ELDER_GUARDIAN_SPAWN_EGG", 1, 11, Message.getMessage("spawner_elder_guardian"));
-            Item.create(inv_spawner, "ENDERMAN_SPAWN_EGG", 1, 12, Message.getMessage("spawner_enderman"));
-            Item.create(inv_spawner, "ENDERMITE_SPAWN_EGG", 1, 13, Message.getMessage("spawner_endermite"));
-            Item.create(inv_spawner, "EVOKER_SPAWN_EGG", 1, 14, Message.getMessage("spawner_evoker"));
-            Item.create(inv_spawner, "GHAST_SPAWN_EGG", 1, 15, Message.getMessage("spawner_ghast"));
-            Item.create(inv_spawner, "GUARDIAN_SPAWN_EGG", 1, 16, Message.getMessage("spawner_guardian"));
-            Item.create(inv_spawner, "HORSE_SPAWN_EGG", 1, 17, Message.getMessage("spawner_horse"));
-            Item.create(inv_spawner, "HUSK_SPAWN_EGG", 1, 18, Message.getMessage("spawner_husk"));
-            Item.create(inv_spawner, "LLAMA_SPAWN_EGG", 1, 19, Message.getMessage("spawner_llama"));
-            Item.create(inv_spawner, "MAGMA_CUBE_SPAWN_EGG", 1, 20, Message.getMessage("spawner_magma_cube"));
-            Item.create(inv_spawner, "MOOSHROOM_SPAWN_EGG", 1, 21, Message.getMessage("spawner_mooshroom"));
-            Item.create(inv_spawner, "MULE_SPAWN_EGG", 1, 22, Message.getMessage("spawner_mule"));
-            Item.create(inv_spawner, "OCELOT_SPAWN_EGG", 1, 23, Message.getMessage("spawner_ocelot"));
-            Item.create(inv_spawner, "PARROT_SPAWN_EGG", 1, 24, Message.getMessage("spawner_parrot"));
-            Item.create(inv_spawner, "PHANTOM_SPAWN_EGG", 1, 25, Message.getMessage("spawner_phantom"));
-            Item.create(inv_spawner, "PIG_SPAWN_EGG", 1, 26, Message.getMessage("spawner_pig"));
-            Item.create(inv_spawner, "POLAR_BEAR_SPAWN_EGG", 1, 27, Message.getMessage("spawner_polar_bear"));
-            Item.create(inv_spawner, "PUFFERFISH_SPAWN_EGG", 1, 28, Message.getMessage("spawner_pufferfish"));
-            Item.create(inv_spawner, "RABBIT_SPAWN_EGG", 1, 29, Message.getMessage("spawner_rabbit"));
-            Item.create(inv_spawner, "SALMON_SPAWN_EGG", 1, 30, Message.getMessage("spawner_salmon"));
-            Item.create(inv_spawner, "SHEEP_SPAWN_EGG", 1, 31, Message.getMessage("spawner_sheep"));
-            Item.create(inv_spawner, "SHULKER_SPAWN_EGG", 1, 32, Message.getMessage("spawner_shulker"));
-            Item.create(inv_spawner, "SILVERFISH_SPAWN_EGG", 1, 33, Message.getMessage("spawner_silverfish"));
-            Item.create(inv_spawner, "SKELETON_SPAWN_EGG", 1, 34, Message.getMessage("spawner_skeleton"));
-            Item.create(inv_spawner, "SKELETON_HORSE_SPAWN_EGG", 1, 35, Message.getMessage("spawner_skeleton_horse"));
-            Item.create(inv_spawner, "SLIME_SPAWN_EGG", 1, 36, Message.getMessage("spawner_slime"));
-            Item.create(inv_spawner, "SPIDER_SPAWN_EGG", 1, 37, Message.getMessage("spawner_spider"));
-            Item.create(inv_spawner, "SQUID_SPAWN_EGG", 1, 38, Message.getMessage("spawner_squid"));
-            Item.create(inv_spawner, "STRAY_SPAWN_EGG", 1, 39, Message.getMessage("spawner_stray"));
-            Item.create(inv_spawner, "TROPICAL_FISH_SPAWN_EGG", 1, 40, Message.getMessage("spawner_tropical_fish"));
-            Item.create(inv_spawner, "TURTLE_SPAWN_EGG", 1, 41, Message.getMessage("spawner_turtle"));
-            Item.create(inv_spawner, "VEX_SPAWN_EGG", 1, 42, Message.getMessage("spawner_vex"));
-            Item.create(inv_spawner, "VILLAGER_SPAWN_EGG", 1, 43, Message.getMessage("spawner_villager"));
-            Item.create(inv_spawner, "VINDICATOR_SPAWN_EGG", 1, 44, Message.getMessage("spawner_vindicator"));
-            Item.create(inv_spawner, "WITCH_SPAWN_EGG", 1, 45, Message.getMessage("spawner_witch"));
-            Item.create(inv_spawner, "WOLF_SPAWN_EGG", 1, 46, Message.getMessage("spawner_wolf"));
-            Item.create(inv_spawner, "ZOMBIE_SPAWN_EGG", 1, 47, Message.getMessage("spawner_zombie"));
-            Item.create(inv_spawner, "ZOMBIE_PIGMAN_SPAWN_EGG", 1, 48, Message.getMessage("spawner_zombie_pigman"));
+            for(Spawners.Material_Version_13 material : Spawners.Material_Version_13.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_13.values()[material.ordinal()].name()));
+            }
         }else if(Bukkit.getVersion().contains("1.12")){
-            Item.create(inv_spawner, "BAT_SPAWN_EGG", 1, 1, Message.getMessage("spawner_bat"));
-            Item.create(inv_spawner, "BLAZE_SPAWN_EGG", 1, 2, Message.getMessage("spawner_blaze"));
-            Item.create(inv_spawner, "CAVE_SPIDER_SPAWN_EGG", 1, 3, Message.getMessage("spawner_cave_spider"));
-            Item.create(inv_spawner, "CHICKEN_SPAWN_EGG", 1, 4, Message.getMessage("spawner_chicken"));
-            Item.create(inv_spawner, "COW_SPAWN_EGG", 1, 5, Message.getMessage("spawner_cow"));
-            Item.create(inv_spawner, "CREEPER_SPAWN_EGG", 1, 6, Message.getMessage("spawner_creeper"));
-            Item.create(inv_spawner, "DONKEY_SPAWN_EGG", 1, 7, Message.getMessage("spawner_donkey"));
-            Item.create(inv_spawner, "ELDER_GUARDIAN_SPAWN_EGG", 1, 8, Message.getMessage("spawner_elder_guardian"));
-            Item.create(inv_spawner, "ENDERMAN_SPAWN_EGG", 1, 9, Message.getMessage("spawner_enderman"));
-            Item.create(inv_spawner, "ENDERMITE_SPAWN_EGG", 1, 10, Message.getMessage("spawner_endermite"));
-            Item.create(inv_spawner, "EVOKER_SPAWN_EGG", 1, 11, Message.getMessage("spawner_evoker"));
-            Item.create(inv_spawner, "GHAST_SPAWN_EGG", 1, 12, Message.getMessage("spawner_ghast"));
-            Item.create(inv_spawner, "GUARDIAN_SPAWN_EGG", 1, 13, Message.getMessage("spawner_guardian"));
-            Item.create(inv_spawner, "HORSE_SPAWN_EGG", 1, 14, Message.getMessage("spawner_horse"));
-            Item.create(inv_spawner, "HUSK_SPAWN_EGG", 1, 15, Message.getMessage("spawner_husk"));
-            Item.create(inv_spawner, "LLAMA_SPAWN_EGG", 1, 16, Message.getMessage("spawner_llama"));
-            Item.create(inv_spawner, "MAGMA_CUBE_SPAWN_EGG", 1, 17, Message.getMessage("spawner_magma_cube"));
-            Item.create(inv_spawner, "MOOSHROOM_SPAWN_EGG", 1, 18, Message.getMessage("spawner_mooshroom"));
-            Item.create(inv_spawner, "MULE_SPAWN_EGG", 1, 19, Message.getMessage("spawner_mule"));
-            Item.create(inv_spawner, "OCELOT_SPAWN_EGG", 1, 20, Message.getMessage("spawner_ocelot"));
-            Item.create(inv_spawner, "PARROT_SPAWN_EGG", 1, 21, Message.getMessage("spawner_parrot"));
-            Item.create(inv_spawner, "PIG_SPAWN_EGG", 1, 22, Message.getMessage("spawner_pig"));
-            Item.create(inv_spawner, "POLAR_BEAR_SPAWN_EGG", 1, 23, Message.getMessage("spawner_polar_bear"));
-            Item.create(inv_spawner, "RABBIT_SPAWN_EGG", 1, 24, Message.getMessage("spawner_rabbit"));
-            Item.create(inv_spawner, "SHEEP_SPAWN_EGG", 1, 25, Message.getMessage("spawner_sheep"));
-            Item.create(inv_spawner, "SHULKER_SPAWN_EGG", 1, 26, Message.getMessage("spawner_shulker"));
-            Item.create(inv_spawner, "SILVERFISH_SPAWN_EGG", 1, 27, Message.getMessage("spawner_silverfish"));
-            Item.create(inv_spawner, "SKELETON_SPAWN_EGG", 1, 28, Message.getMessage("spawner_skeleton"));
-            Item.create(inv_spawner, "SKELETON_HORSE_SPAWN_EGG", 1, 29, Message.getMessage("spawner_skeleton_horse"));
-            Item.create(inv_spawner, "SLIME_SPAWN_EGG", 1, 30, Message.getMessage("spawner_slime"));
-            Item.create(inv_spawner, "SPIDER_SPAWN_EGG", 1, 31, Message.getMessage("spawner_spider"));
-            Item.create(inv_spawner, "SQUID_SPAWN_EGG", 1, 32, Message.getMessage("spawner_squid"));
-            Item.create(inv_spawner, "STRAY_SPAWN_EGG", 1, 33, Message.getMessage("spawner_stray"));
-            Item.create(inv_spawner, "VEX_SPAWN_EGG", 1, 34, Message.getMessage("spawner_vex"));
-            Item.create(inv_spawner, "VILLAGER_SPAWN_EGG", 1, 35, Message.getMessage("spawner_villager"));
-            Item.create(inv_spawner, "VINDICATOR_SPAWN_EGG", 1, 36, Message.getMessage("spawner_vindicator"));
-            Item.create(inv_spawner, "WITCH_SPAWN_EGG", 1, 37, Message.getMessage("spawner_witch"));
-            Item.create(inv_spawner, "WOLF_SPAWN_EGG", 1, 38, Message.getMessage("spawner_wolf"));
-            Item.create(inv_spawner, "ZOMBIE_SPAWN_EGG", 1, 39, Message.getMessage("spawner_zombie"));
-            Item.create(inv_spawner, "ZOMBIE_PIGMAN_SPAWN_EGG", 1, 40, Message.getMessage("spawner_zombie_pigman"));
+            for(Spawners.Material_Version_12 material : Spawners.Material_Version_12.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_12.values()[material.ordinal()].name()));
+            }
+        }else if(Bukkit.getVersion().contains("1.11")){
+            for(Spawners.Material_Version_11 material : Spawners.Material_Version_11.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_11.values()[material.ordinal()].name()));
+            }
+        }else if(Bukkit.getVersion().contains("1.10")){
+            for(Spawners.Material_Version_10 material : Spawners.Material_Version_10.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_10.values()[material.ordinal()].name()));
+            }
         }
 
         Item.create(inv_spawner, "REDSTONE_BLOCK", 1, 54, Message.getMessage("spawner_back"));
@@ -820,6 +674,7 @@ public class AdminUI {
             p.openInventory(GUI_Main(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_heal"))){
             p.setHealth(20);
+            p.setFireTicks(0);
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_heal"));
             p.closeInventory();
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_feed"))){
@@ -974,6 +829,7 @@ public class AdminUI {
                 target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_teleport").replace("{player}", p.getName()));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_heal"))){
                 target_player.setHealth(20);
+                target_player.setFireTicks(0);
                 target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_heal").replace("{player}", p.getName()));
                 p.sendMessage(Message.chat(Message.getMessage("prefix") + Message.getMessage("message_player_heal").replace("{player}", target_player.getName())));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_feed"))){
@@ -1622,9 +1478,5 @@ public class AdminUI {
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
             p.closeInventory();
         }
-    }
-
-    public static void setAdminGUI(AdminGUI adminGUI) {
-        AdminUI.adminGUI = adminGUI;
     }
 }

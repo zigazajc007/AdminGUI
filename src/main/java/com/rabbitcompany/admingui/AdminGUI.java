@@ -3,6 +3,7 @@ package com.rabbitcompany.admingui;
 import com.rabbitcompany.admingui.commands.Admin;
 import com.rabbitcompany.admingui.listeners.InventoryClickListener;
 import com.rabbitcompany.admingui.listeners.PlayerJoinListener;
+import com.rabbitcompany.admingui.listeners.PlayerLoginListener;
 import com.rabbitcompany.admingui.ui.AdminUI;
 import com.rabbitcompany.admingui.utils.Message;
 import com.rabbitcompany.admingui.utils.Updater;
@@ -46,6 +47,7 @@ public class AdminGUI extends JavaPlugin {
         //Listeners
         new InventoryClickListener(this);
         new PlayerJoinListener(this);
+        new PlayerLoginListener(this);
 
         AdminUI.initialize();
 

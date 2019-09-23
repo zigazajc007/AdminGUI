@@ -22,12 +22,9 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
 
-        if(AdminUI.maintenance_mode && !event.getPlayer().hasPermission("admingui.maintenance")){
-            event.getPlayer().kickPlayer(Message.getMessage("prefix") + Message.getMessage("message_maintenance"));
-        }
-
         if(event.getPlayer().hasPermission("admingui.admin") || event.getPlayer().isOp()){
             Updater.sendPlayer(event.getPlayer());
         }
+
     }
 }
