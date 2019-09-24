@@ -49,8 +49,6 @@ public class AdminGUI extends JavaPlugin {
         new PlayerJoinListener(this);
         new PlayerLoginListener(this);
 
-        AdminUI.initialize();
-
         //Commands
         this.getCommand("admin").setExecutor((CommandExecutor) new Admin());
     }

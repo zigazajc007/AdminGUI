@@ -1,6 +1,5 @@
 package com.rabbitcompany.admingui.utils;
 
-import com.rabbitcompany.admingui.ui.AdminUI;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.potion.PotionEffect;
@@ -10,12 +9,12 @@ import java.util.Date;
 
 public class TargetPlayer {
 
-    public static void setPotionEffect(org.bukkit.entity.Player p, org.bukkit.entity.Player target_player, PotionEffectType potion, String getPotionConfigName){
+    public void setPotionEffect(org.bukkit.entity.Player p, org.bukkit.entity.Player target_player, PotionEffectType potion, String getPotionConfigName, int duration, int level){
         if(target_player.hasPotionEffect(potion)){
             target_player.removePotionEffect(potion);
         }
-        target_player.addPotionEffect(new PotionEffect(potion, AdminUI.duration*1200, AdminUI.level-1));
-        if(AdminUI.duration == 1000000){
+        target_player.addPotionEffect(new PotionEffect(potion, duration*1200, level-1));
+        if(duration == 1000000){
             if(p.getName().equals(target_player.getName())){
                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_potions").replace("{potion}", Message.getMessage(getPotionConfigName)).replace("{time}", "∞"));
             }else{
@@ -24,10 +23,10 @@ public class TargetPlayer {
             }
         }else {
             if (p.getName().equals(target_player.getName())) {
-                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_potions").replace("{potion}", Message.getMessage(getPotionConfigName)).replace("{time}", "" + AdminUI.duration));
+                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_potions").replace("{potion}", Message.getMessage(getPotionConfigName)).replace("{time}", "" + duration));
             } else {
-                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_potions").replace("{player}", target_player.getName()).replace("{potion}", Message.getMessage(getPotionConfigName)).replace("{time}", "" + AdminUI.duration));
-                target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_potions").replace("{player}", p.getName()).replace("{potion}", Message.getMessage(getPotionConfigName)).replace("{time}", "" + AdminUI.duration));
+                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_potions").replace("{player}", target_player.getName()).replace("{potion}", Message.getMessage(getPotionConfigName)).replace("{time}", "" + duration));
+                target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_potions").replace("{player}", p.getName()).replace("{potion}", Message.getMessage(getPotionConfigName)).replace("{time}", "" + duration));
             }
         }
     }

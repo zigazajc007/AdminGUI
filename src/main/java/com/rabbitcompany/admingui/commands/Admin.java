@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 
 public class Admin implements CommandExecutor {
 
+    private AdminUI adminUI = new AdminUI();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
 
@@ -21,14 +23,14 @@ public class Admin implements CommandExecutor {
 
         if(player.hasPermission("admingui.admin")){
             if(args.length == 0){
-                player.openInventory(AdminUI.GUI_Main(player));
+                player.openInventory(adminUI.GUI_Main(player));
             }else if(args.length == 1){
                     Player target_player = Bukkit.getServer().getPlayer(args[0]);
                     if(target_player != null){
                         if(player.getName().equals(target_player.getName())){
-                            player.openInventory(AdminUI.GUI_Player(player));
+                            player.openInventory(adminUI.GUI_Player(player));
                         }else{
-                            player.openInventory(AdminUI.GUI_Players_Settings(player, target_player));
+                            player.openInventory(adminUI.GUI_Players_Settings(player, target_player));
                         }
                     }else{
                         player.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_player").replace("{player}", args[0]));

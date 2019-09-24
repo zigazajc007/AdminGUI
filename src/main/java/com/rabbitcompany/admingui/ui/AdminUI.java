@@ -1,6 +1,10 @@
 package com.rabbitcompany.admingui.ui;
 
 import com.rabbitcompany.admingui.utils.*;
+import com.rabbitcompany.admingui.utils.potions.Version_12;
+import com.rabbitcompany.admingui.utils.potions.Version_14;
+import com.rabbitcompany.admingui.utils.spawners.materials.*;
+import com.rabbitcompany.admingui.utils.spawners.messages.*;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -15,89 +19,34 @@ import java.util.Collections;
 import java.util.Date;
 
 public class AdminUI {
-    
-    private static Inventory inv_main;
-    public static String inventory_main_name;
-    private static int inv_main_rows = 27;
 
-    private static Inventory inv_player;
-    public static String inventory_player_name;
-    private static int inv_player_rows = 9;
+    public String inventory_players_settings_name;
+    public String inventory_actions_name;
+    public String inventory_kick_name;
+    public String inventory_ban_name;
+    public String inventory_potions_name;
+    public String inventory_spawner_name;
+    public String inventory_inventory_name;
 
-    private static Inventory inv_world;
-    public static String inventory_world_name;
-    private static int inv_world_rows = 27;
+    public String target_player;
 
-    private static Inventory inv_players;
-    public static String inventory_players_name;
-    private static int inv_players_rows = 54;
+    private int ban_years = 0;
+    private int ban_months = 0;
+    private int ban_days = 1;
+    private int ban_hours = 0;
+    private int ban_minutes = 0;
 
-    private static Inventory inv_players_settings;
-    public static String inventory_players_settings_name;
-    private static int inv_players_settings_rows = 27;
+    private int page = 1;
+    private int pages = 1;
 
-    private static Inventory inv_actions;
-    public static String inventory_actions_name;
-    private static int inv_actions_rows = 36;
-
-    private static Inventory inv_kick;
-    public static String inventory_kick_name;
-    private static int inv_kick_rows = 27;
-
-    private static Inventory inv_ban;
-    public static String inventory_ban_name;
-    private static int inv_ban_rows = 36;
-
-    private static Inventory inv_potions;
-    public static String inventory_potions_name;
-    private static int inv_potions_rows = 36;
-
-    private static Inventory inv_spawner;
-    public static String inventory_spawner_name;
-    private static int inv_spawner_rows = 54;
-
-    private static Inventory inv_inventory;
-    public static String inventory_inventory_name;
-    private static int inv_inventory_rows = 54;
-
-    public static String target_player;
-
-    private static int ban_years = 0;
-    private static int ban_months = 0;
-    private static int ban_days = 1;
-    private static int ban_hours = 0;
-    private static int ban_minutes = 0;
-
-    private static int page = 1;
-    private static int pages = 1;
-
-    public static int duration = 1;
-    public static int level = 1;
+    private int duration = 1;
+    private int level = 1;
 
     public static boolean maintenance_mode = false;
 
-    public static void initialize(){
+    public Inventory GUI_Main(Player p){
 
-        inventory_main_name = Message.getMessage("inventory_main");
-        inventory_world_name = Message.getMessage("inventory_world");
-        inventory_players_name = Message.getMessage("inventory_players");
-
-        inv_main = Bukkit.createInventory(null, inv_main_rows);
-        inv_player = Bukkit.createInventory(null, inv_player_rows);
-        inv_world = Bukkit.createInventory(null, inv_world_rows);
-        inv_players = Bukkit.createInventory(null, inv_players_rows);
-        inv_players_settings = Bukkit.createInventory(null, inv_players_settings_rows);
-        inv_actions = Bukkit.createInventory(null, inv_actions_rows);
-        inv_kick = Bukkit.createInventory(null, inv_kick_rows);
-        inv_ban = Bukkit.createInventory(null, inv_ban_rows);
-        inv_potions = Bukkit.createInventory(null, inv_potions_rows);
-        inv_spawner = Bukkit.createInventory(null, inv_spawner_rows);
-        inv_inventory = Bukkit.createInventory(null, inv_inventory_rows);
-    }
-
-    public static Inventory GUI_Main(Player p){
-
-        Inventory toReturn = Bukkit.createInventory(null, inv_main_rows, inventory_main_name);
+        Inventory inv_main = Bukkit.createInventory(null, 27, Message.getMessage("inventory_main"));
 
         Player random_player = Bukkit.getOnlinePlayers().stream().findAny().get();
 
@@ -115,16 +64,14 @@ public class AdminUI {
         }
         Item.create(inv_main, "REDSTONE_BLOCK", 1, 27, Message.getMessage("main_quit"));
 
-        toReturn.setContents(inv_main.getContents());
-
-        return toReturn;
+        return inv_main;
     }
 
-    public static Inventory GUI_Player(Player p){
+    public Inventory GUI_Player(Player p){
 
-        inventory_player_name = Message.getMessage("inventory_player").replace("{player}", p.getName());
+        String inventory_player_name = Message.getMessage("inventory_player").replace("{player}", p.getName());
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_player_rows, inventory_player_name);
+        Inventory inv_player = Bukkit.createInventory(null, 9, inventory_player_name);
 
         for(int i = 1; i < 9; i++){
             Item.create(inv_player, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
@@ -192,14 +139,12 @@ public class AdminUI {
 
         Item.create(inv_player, "REDSTONE_BLOCK", 1, 9, Message.getMessage("player_back"));
 
-        toReturn.setContents(inv_player.getContents());
-
-        return toReturn;
+        return inv_player;
     }
 
-    public static Inventory GUI_World(Player p){
+    private Inventory GUI_World(Player p){
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_world_rows, inventory_world_name);
+        Inventory inv_world = Bukkit.createInventory(null, 27, Message.getMessage("inventory_world"));
 
         for(int i = 1; i < 27; i++){
             Item.create(inv_world, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
@@ -229,16 +174,14 @@ public class AdminUI {
 
         Item.create(inv_world, "REDSTONE_BLOCK", 1, 27, Message.getMessage("world_back"));
 
-        toReturn.setContents(inv_world.getContents());
-
-        return toReturn;
+        return inv_world;
     }
 
-    public static Inventory GUI_Players(Player p){
+    private Inventory GUI_Players(Player p){
 
         ArrayList<String> pl = new ArrayList<String>();
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_players_rows, inventory_players_name);
+        Inventory inv_players = Bukkit.createInventory(null, 54, Message.getMessage("inventory_players"));
 
         for(Player all : Bukkit.getServer().getOnlinePlayers()) {
             pl.add(all.getName());
@@ -281,16 +224,13 @@ public class AdminUI {
 
         Item.create(inv_players, "REDSTONE_BLOCK", 1, 54, Message.getMessage("players_back"));
 
-        toReturn.setContents(inv_players.getContents());
-
-        return toReturn;
+        return inv_players;
     }
 
-    public static Inventory GUI_Players_Settings(Player p, Player target_player){
+    public Inventory GUI_Players_Settings(Player p, Player target_player){
 
         inventory_players_settings_name = Message.getMessage("players_color") + target_player.getName();
-
-        Inventory toReturn = Bukkit.createInventory(null, inv_players_settings_rows, inventory_players_settings_name);
+        Inventory inv_players_settings = Bukkit.createInventory(null, 27, inventory_players_settings_name);
 
         for(int i = 1; i < 27; i++){
                 Item.create(inv_players_settings, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
@@ -324,19 +264,17 @@ public class AdminUI {
 
         Item.create(inv_players_settings, "REDSTONE_BLOCK", 1, 27, Message.getMessage("players_settings_back"));
 
-        toReturn.setContents(inv_players_settings.getContents());
-
-        return toReturn;
+        return inv_players_settings;
     }
 
-    public static Inventory GUI_Actions(Player p, String target){
+    public Inventory GUI_Actions(Player p, String target){
 
         inventory_actions_name = Message.getMessage("inventory_actions").replace("{player}", target);
         target_player = target;
 
         Player target_player = Bukkit.getServer().getPlayer(target);
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_actions_rows, inventory_actions_name);
+        Inventory inv_actions = Bukkit.createInventory(null, 36, inventory_actions_name);
 
         for(int i = 1; i < 36; i++){
             Item.create(inv_actions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
@@ -422,17 +360,15 @@ public class AdminUI {
 
         Item.create(inv_actions, "REDSTONE_BLOCK", 1, 36, Message.getMessage("actions_back"));
 
-        toReturn.setContents(inv_actions.getContents());
-
-        return toReturn;
+        return inv_actions;
     }
 
-    public static Inventory GUI_Kick(Player p, String target){
+    public Inventory GUI_Kick(Player p, String target){
 
         inventory_kick_name = Message.getMessage("inventory_kick").replace("{player}", target);
         target_player = target;
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_kick_rows, inventory_kick_name);
+        Inventory inv_kick = Bukkit.createInventory(null, 27, inventory_kick_name);
 
         for (int i = 1; i < 27; i++){
                 Item.create(inv_kick, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
@@ -446,17 +382,15 @@ public class AdminUI {
 
         Item.create(inv_kick, "REDSTONE_BLOCK", 1, 27, Message.getMessage("kick_back"));
 
-        toReturn.setContents(inv_kick.getContents());
-
-        return toReturn;
+        return inv_kick;
     }
 
-    public static Inventory GUI_Ban(Player p, String target){
+    public Inventory GUI_Ban(Player p, String target){
 
         inventory_ban_name = Message.getMessage("inventory_ban").replace("{player}", target);
         target_player = target;
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_ban_rows, inventory_ban_name);
+        Inventory inv_ban = Bukkit.createInventory(null, 36, inventory_ban_name);
 
         for (int i = 1; i < 36; i++){
             Item.create(inv_ban, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
@@ -500,17 +434,15 @@ public class AdminUI {
 
         Item.create(inv_ban, "REDSTONE_BLOCK", 1, 36, Message.getMessage("ban_back"));
 
-        toReturn.setContents(inv_ban.getContents());
-
-        return toReturn;
+        return inv_ban;
     }
 
-    public static Inventory GUI_Potions(Player p, String target){
+    public Inventory GUI_potions(Player p, String target){
 
         inventory_potions_name = Message.getMessage("inventory_potions").replace("{player}", target);
         target_player = target;
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_potions_rows, inventory_potions_name);
+        Inventory inv_potions = Bukkit.createInventory(null, 36, inventory_potions_name);
 
         for (int i = 1; i < 36; i++){
             Item.create(inv_potions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
@@ -518,13 +450,13 @@ public class AdminUI {
 
         if (Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.13")) {
 
-            for(Potions.Version_14 potion : Potions.Version_14.values()){
+            for(Version_14 potion : Version_14.values()){
                 Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
             }
 
         }else if(Bukkit.getVersion().contains("1.12") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.10")){
 
-            for(Potions.Version_12 potion : Potions.Version_12.values()){
+            for(Version_12 potion : Version_12.values()){
                 Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
             }
 
@@ -536,53 +468,49 @@ public class AdminUI {
 
         Item.create(inv_potions, "REDSTONE_BLOCK", 1, 36, Message.getMessage("potions_back"));
 
-        toReturn.setContents(inv_potions.getContents());
-
-        return toReturn;
+        return inv_potions;
     }
 
-    public static Inventory GUI_Spawner(Player p, String target){
+    public Inventory GUI_Spawner(Player p, String target){
 
         inventory_spawner_name = Message.getMessage("inventory_spawner").replace("{player}", target);
+        Inventory inv_spawner = Bukkit.createInventory(null, 54, inventory_spawner_name);
+
         target_player = target;
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_spawner_rows, inventory_spawner_name);
-
         if (Bukkit.getVersion().contains("1.14")) {
-            for(Spawners.Material_Version_14 material : Spawners.Material_Version_14.values()){
-                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_14.values()[material.ordinal()].name()));
+            for(Material_Version_14 material : Material_Version_14.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_14.values()[material.ordinal()].name()));
             }
         }else if(Bukkit.getVersion().contains("1.13")){
-            for(Spawners.Material_Version_13 material : Spawners.Material_Version_13.values()){
-                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_13.values()[material.ordinal()].name()));
+            for(Material_Version_13 material : Material_Version_13.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_13.values()[material.ordinal()].name()));
             }
         }else if(Bukkit.getVersion().contains("1.12")){
-            for(Spawners.Material_Version_12 material : Spawners.Material_Version_12.values()){
-                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_12.values()[material.ordinal()].name()));
+            for(Material_Version_12 material : Material_Version_12.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_12.values()[material.ordinal()].name()));
             }
         }else if(Bukkit.getVersion().contains("1.11")){
-            for(Spawners.Material_Version_11 material : Spawners.Material_Version_11.values()){
-                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_11.values()[material.ordinal()].name()));
+            for(Material_Version_11 material : Material_Version_11.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_11.values()[material.ordinal()].name()));
             }
         }else if(Bukkit.getVersion().contains("1.10")){
-            for(Spawners.Material_Version_10 material : Spawners.Material_Version_10.values()){
-                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Spawners.Message_Version_10.values()[material.ordinal()].name()));
+            for(Material_Version_10 material : Material_Version_10.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_10.values()[material.ordinal()].name()));
             }
         }
 
         Item.create(inv_spawner, "REDSTONE_BLOCK", 1, 54, Message.getMessage("spawner_back"));
 
-        toReturn.setContents(inv_spawner.getContents());
-
-        return toReturn;
+        return inv_spawner;
     }
 
-    public static Inventory GUI_Inventory(Player p, String target) {
+    public Inventory GUI_Inventory(Player p, String target) {
 
         inventory_inventory_name = Message.getMessage("inventory_inventory").replace("{player}", target);
         target_player = target;
 
-        Inventory toReturn = Bukkit.createInventory(null, inv_inventory_rows, inventory_inventory_name);
+        Inventory inv_inventory = Bukkit.createInventory(null, 54, inventory_inventory_name);
 
         Player player_target = Bukkit.getServer().getPlayer(target);
 
@@ -629,12 +557,10 @@ public class AdminUI {
 
         Item.create(inv_inventory, "REDSTONE_BLOCK", 1, 54, Message.getMessage("inventory_back"));
 
-        toReturn.setContents(inv_inventory.getContents());
-
-        return toReturn;
+        return inv_inventory;
     }
 
-    public static void clicked_main(Player p, int slot, ItemStack clicked, Inventory inv){
+    public void clicked_main(Player p, int slot, ItemStack clicked, Inventory inv){
 
         if(InventoryGUI.getClickedItem(clicked, Message.getMessage("main_quit"))){
             p.closeInventory();
@@ -668,7 +594,7 @@ public class AdminUI {
 
     }
 
-    public static void clicked_player(Player p, int slot, ItemStack clicked, Inventory inv){
+    public void clicked_player(Player p, int slot, ItemStack clicked, Inventory inv){
 
         if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_back"))) {
             p.openInventory(GUI_Main(p));
@@ -702,7 +628,7 @@ public class AdminUI {
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_god_disabled"));
             p.openInventory(GUI_Player(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_potions"))){
-            p.openInventory(GUI_Potions(p, p.getName()));
+            p.openInventory(GUI_potions(p, p.getName()));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_spawner"))){
             p.openInventory(GUI_Spawner(p, p.getName()));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_kill"))){
@@ -714,7 +640,7 @@ public class AdminUI {
         }
     }
 
-    public static void clicked_world(Player p, int slot, ItemStack clicked, Inventory inv){
+    public void clicked_world(Player p, int slot, ItemStack clicked, Inventory inv){
 
         if(InventoryGUI.getClickedItem(clicked, Message.getMessage("world_back"))) {
             p.openInventory(GUI_Main(p));
@@ -743,7 +669,7 @@ public class AdminUI {
 
     }
 
-    public static void clicked_players(Player p, int slot, ItemStack clicked, Inventory inv){
+    public void clicked_players(Player p, int slot, ItemStack clicked, Inventory inv){
 
         if(clicked.getItemMeta().getLore() != null){
             if(clicked.getItemMeta().getLore().get(0).equals(Message.getMessage("players_lore"))){
@@ -767,7 +693,7 @@ public class AdminUI {
 
     }
 
-    public static void clicked_players_settings(Player p, int slot, ItemStack clicked, Inventory inv, String title){
+    public void clicked_players_settings(Player p, int slot, ItemStack clicked, Inventory inv, String title){
 
         Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
 
@@ -792,7 +718,7 @@ public class AdminUI {
 
     }
 
-    public static void clicked_actions(Player p, int slot, ItemStack clicked, Inventory inv, String title){
+    public void clicked_actions(Player p, int slot, ItemStack clicked, Inventory inv, String title){
 
         Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
 
@@ -847,7 +773,7 @@ public class AdminUI {
                 target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_god_disabled").replace("{player}", p.getName()));
                 p.openInventory(GUI_Actions(p,target_player.getName()));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_potions"))){
-                p.openInventory(GUI_Potions(p, target_player.getName()));
+                p.openInventory(GUI_potions(p, target_player.getName()));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_inventory"))){
                 p.openInventory(GUI_Inventory(p, target_player.getName()));
             }
@@ -858,7 +784,7 @@ public class AdminUI {
 
     }
 
-    public static void clicked_kick(Player p, int slot, ItemStack clicked, Inventory inv, String title){
+    public void clicked_kick(Player p, int slot, ItemStack clicked, Inventory inv, String title){
 
         Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
 
@@ -918,7 +844,7 @@ public class AdminUI {
 
     }
 
-    public static void clicked_ban(Player p, int slot, ItemStack clicked, Inventory inv, String title){
+    public void clicked_ban(Player p, int slot, ItemStack clicked, Inventory inv, String title){
 
         Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
 
@@ -1209,9 +1135,11 @@ public class AdminUI {
 
     }
 
-    public static void clicked_potions(Player p, int slot, ItemStack clicked, Inventory inv, String title){
+    public void clicked_potions(Player p, int slot, ItemStack clicked, Inventory inv, String title){
 
         Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+
+        TargetPlayer targetPlayer = new TargetPlayer();
 
         if(target_player != null){
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_back"))){
@@ -1254,7 +1182,7 @@ public class AdminUI {
                         duration = 1;
                         break;
                 }
-                p.openInventory(GUI_Potions(p, target_player.getName()));
+                p.openInventory(GUI_potions(p, target_player.getName()));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_level"))){
                 switch (level){
                     case 1:
@@ -1273,7 +1201,7 @@ public class AdminUI {
                         level = 1;
                         break;
                 }
-                p.openInventory(GUI_Potions(p, target_player.getName()));
+                p.openInventory(GUI_potions(p, target_player.getName()));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_remove_all"))) {
                 for (PotionEffect effect : target_player.getActivePotionEffects()){
                     target_player.removePotionEffect(effect.getType());
@@ -1286,51 +1214,51 @@ public class AdminUI {
                     p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_potions_remove").replace("{player}", target_player.getName()));
                 }
 
-                p.openInventory(GUI_Potions(p, target_player.getName()));
+                p.openInventory(GUI_potions(p, target_player.getName()));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_night_vision"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.NIGHT_VISION, "potions_night_vision");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.NIGHT_VISION, "potions_night_vision", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_invisibility"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.INVISIBILITY, "potions_invisibility");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.INVISIBILITY, "potions_invisibility", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_jump_boost"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.JUMP, "potions_jump_boost");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.JUMP, "potions_jump_boost", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_fire_resistance"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.FIRE_RESISTANCE, "potions_fire_resistance");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.FIRE_RESISTANCE, "potions_fire_resistance", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_speed"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.SPEED, "potions_speed");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SPEED, "potions_speed", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_slowness"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.SLOW, "potions_slowness");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SLOW, "potions_slowness", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_water_breathing"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.WATER_BREATHING, "potions_water_breathing");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.WATER_BREATHING, "potions_water_breathing", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_instant_health"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.HEAL, "potions_instant_health");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.HEAL, "potions_instant_health", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_instant_damage"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.HARM, "potions_instant_damage");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.HARM, "potions_instant_damage", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_poison"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.POISON, "potions_poison");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.POISON, "potions_poison", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_regeneration"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.REGENERATION, "potions_regeneration");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.REGENERATION, "potions_regeneration", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_strength"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.INCREASE_DAMAGE, "potions_strength");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.INCREASE_DAMAGE, "potions_strength", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_weakness"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.WEAKNESS, "potions_weakness");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.WEAKNESS, "potions_weakness", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_luck"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.LUCK, "potions_luck");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.LUCK, "potions_luck", duration, level);
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_slow_falling"))){
-                TargetPlayer.setPotionEffect(p, target_player, PotionEffectType.SLOW_FALLING, "potions_slow_falling");
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SLOW_FALLING, "potions_slow_falling", duration, level);
                 p.closeInventory();
             }
         }else{
@@ -1339,7 +1267,7 @@ public class AdminUI {
         }
     }
 
-    public static void clicked_spawner(Player p, int slot, ItemStack clicked, Inventory inv, String title){
+    public void clicked_spawner(Player p, int slot, ItemStack clicked, Inventory inv, String title){
 
         Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
 
@@ -1465,7 +1393,7 @@ public class AdminUI {
         }
     }
 
-    public static void clicked_inventory(Player p, int slot, ItemStack clicked, Inventory inv, String title){
+    public void clicked_inventory(Player p, int slot, ItemStack clicked, Inventory inv, String title){
         Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
 
         if(target_player != null){
