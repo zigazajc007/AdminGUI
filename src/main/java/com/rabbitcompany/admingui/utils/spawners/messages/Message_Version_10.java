@@ -1,0 +1,33 @@
+package com.rabbitcompany.admingui.utils.spawners.messages;
+
+public enum Message_Version_10 {
+    spawner_bat,
+    spawner_blaze,
+    spawner_cave_spider,
+    spawner_chicken,
+    spawner_cow,
+    spawner_creeper,
+    spawner_enderman,
+    spawner_endermite,
+    spawner_ghast,
+    spawner_guardian,
+    spawner_horse,
+    spawner_magma_cube,
+    spawner_mooshroom,
+    spawner_ocelot,
+    spawner_pig,
+    spawner_polar_bear,
+    spawner_rabbit,
+    spawner_sheep,
+    spawner_shulker,
+    spawner_silverfish,
+    spawner_skeleton,
+    spawner_slime,
+    spawner_spider,
+    spawner_squid,
+    spawner_villager,
+    spawner_witch,
+    spawner_wolf,
+    spawner_zombie,
+    spawner_zombie_pigman
+}
