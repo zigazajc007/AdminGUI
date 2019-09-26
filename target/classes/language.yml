@@ -92,7 +92,7 @@ world_back: "&c&lBack"
 #----------------------------------------------------------
 #                     Players GUI
 #----------------------------------------------------------
-players_color: "&2&l"
+players_color: "&2&l{player}"
 players_lore: "&cClick me for more actions"
 players_previous: "&c&lPrevious"
 players_page: "&a&lPage"

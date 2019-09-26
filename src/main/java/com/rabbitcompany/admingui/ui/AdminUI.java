@@ -17,31 +17,28 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 
 public class AdminUI {
 
-    public String inventory_players_settings_name;
-    public String inventory_actions_name;
-    public String inventory_kick_name;
-    public String inventory_ban_name;
-    public String inventory_potions_name;
-    public String inventory_spawner_name;
-    public String inventory_inventory_name;
+    public HashMap<Player, Player> target_player = new HashMap<Player, Player>();
 
-    public String target_player;
+    //Ban
+    private HashMap<Player, Integer> ban_years = new HashMap<Player, Integer>();
+    private HashMap<Player, Integer> ban_months = new HashMap<Player, Integer>();
+    private HashMap<Player, Integer> ban_days = new HashMap<Player, Integer>();
+    private HashMap<Player, Integer> ban_hours = new HashMap<Player, Integer>();
+    private HashMap<Player, Integer> ban_minutes = new HashMap<Player, Integer>();
 
-    private int ban_years = 0;
-    private int ban_months = 0;
-    private int ban_days = 1;
-    private int ban_hours = 0;
-    private int ban_minutes = 0;
+    //Page
+    private HashMap<Player, Integer> page = new HashMap<Player, Integer>();
+    private HashMap<Player, Integer> pages = new HashMap<Player, Integer>();
 
-    private int page = 1;
-    private int pages = 1;
+    //Potions
+    private HashMap<Player, Integer> duration = new HashMap<Player, Integer>();
+    private HashMap<Player, Integer> level = new HashMap<Player, Integer>();
 
-    private int duration = 1;
-    private int level = 1;
-
+    //Maintenance mode
     public static boolean maintenance_mode = false;
 
     public Inventory GUI_Main(Player p){
@@ -193,32 +190,32 @@ public class AdminUI {
 
         int online = pl.size();
 
-        pages = (int) Math.ceil((float)online / 45);
+        pages.put(p, (int) Math.ceil((float)online / 45));
 
         for (int i = 46; i <= 53; i++){
             Item.create(inv_players, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
         }
 
-        int player_slot = (page-1) * 45;
+        int player_slot = (page.getOrDefault(p,1)-1) * 45;
 
         for (int i = 0; i < 45; i++){
             if(player_slot < online){
-                Item.createPlayerHead(inv_players, pl.get(player_slot),1, i+1, Message.getMessage("players_color") + pl.get(player_slot), Message.getMessage("players_lore"));
+                Item.createPlayerHead(inv_players, pl.get(player_slot),1, i+1, Message.getMessage("players_color").replace("{player}", pl.get(player_slot)), Message.getMessage("players_lore"));
                 player_slot++;
             }else{
                 Item.create(inv_players, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i+1, "Empty");
             }
         }
 
-        if(page > 1){
+        if(page.getOrDefault(p, 1) > 1){
             Item.create(inv_players, "PAPER", 1, 49, Message.getMessage("players_previous"));
         }
 
-        if(pages > 1){
-            Item.create(inv_players, "BOOK", page, 50, Message.getMessage("players_page") + " " + page);
+        if(pages.getOrDefault(p, 1) > 1){
+            Item.create(inv_players, "BOOK", page.getOrDefault(p, 1), 50, Message.getMessage("players_page") + " " + page.getOrDefault(p, 1));
         }
 
-        if(pages > page){
+        if(pages.get(p) > page.getOrDefault(p, 1)){
             Item.create(inv_players, "PAPER", 1, 51, Message.getMessage("players_next"));
         }
 
@@ -229,7 +226,7 @@ public class AdminUI {
 
     public Inventory GUI_Players_Settings(Player p, Player target_player){
 
-        inventory_players_settings_name = Message.getMessage("players_color") + target_player.getName();
+        String inventory_players_settings_name = Message.getMessage("players_color").replace("{player}", target_player.getName());
         Inventory inv_players_settings = Bukkit.createInventory(null, 27, inventory_players_settings_name);
 
         for(int i = 1; i < 27; i++){
@@ -267,12 +264,10 @@ public class AdminUI {
         return inv_players_settings;
     }
 
-    public Inventory GUI_Actions(Player p, String target){
+    public Inventory GUI_Actions(Player p, Player target){
 
-        inventory_actions_name = Message.getMessage("inventory_actions").replace("{player}", target);
-        target_player = target;
-
-        Player target_player = Bukkit.getServer().getPlayer(target);
+        String inventory_actions_name = Message.getMessage("inventory_actions").replace("{player}", target.getName());
+        target_player.put(p, target);
 
         Inventory inv_actions = Bukkit.createInventory(null, 36, inventory_actions_name);
 
@@ -281,9 +276,9 @@ public class AdminUI {
         }
 
         if(p.hasPermission("admingui.info")) {
-            Item.createPlayerHead(inv_actions, target_player.getName(), 1, 5, Message.getMessage("actions_info").replace("{player}", target_player.getName()), Message.chat("&eHeal: " + Math.round(target_player.getHealth())), Message.chat("&7Feed: " + Math.round(target_player.getFoodLevel())), Message.chat("&aGamemode: " + target_player.getGameMode().toString()), Message.chat("&5IP: " + target_player.getAddress()));
+            Item.createPlayerHead(inv_actions, target.getName(), 1, 5, Message.getMessage("actions_info").replace("{player}", target.getName()), Message.chat("&eHeal: " + Math.round(target.getHealth())), Message.chat("&7Feed: " + Math.round(target.getFoodLevel())), Message.chat("&aGamemode: " + target.getGameMode().toString()), Message.chat("&5IP: " + target.getAddress()));
         }else{
-            Item.createPlayerHead(inv_actions, target_player.getName(), 1, 5, Message.getMessage("actions_info").replace("{player}", target_player.getName()));
+            Item.createPlayerHead(inv_actions, target.getName(), 1, 5, Message.getMessage("actions_info").replace("{player}", target.getName()));
         }
 
         if(p.hasPermission("admingui.heal.other")) {
@@ -299,13 +294,13 @@ public class AdminUI {
         }
 
         if(p.hasPermission("admingui.gamemode.other")) {
-            if (target_player.getGameMode() == GameMode.SURVIVAL) {
+            if (target.getGameMode() == GameMode.SURVIVAL) {
                 Item.create(inv_actions, "DIRT", 1, 15, Message.getMessage("actions_survival"));
-            } else if (target_player.getGameMode() == GameMode.ADVENTURE) {
+            } else if (target.getGameMode() == GameMode.ADVENTURE) {
                 Item.create(inv_actions, "GRASS_BLOCK", 1, 15, Message.getMessage("actions_adventure"));
-            } else if (target_player.getGameMode() == GameMode.CREATIVE) {
+            } else if (target.getGameMode() == GameMode.CREATIVE) {
                 Item.create(inv_actions, "BRICKS", 1, 15, Message.getMessage("actions_creative"));
-            } else if (target_player.getGameMode() == GameMode.SPECTATOR) {
+            } else if (target.getGameMode() == GameMode.SPECTATOR) {
                 Item.create(inv_actions, "SPLASH_POTION", 1, 15, Message.getMessage("actions_spectator"));
             }
         }else{
@@ -313,7 +308,7 @@ public class AdminUI {
         }
 
         if(p.hasPermission("admingui.god.other")) {
-            if (target_player.isInvulnerable()) {
+            if (target.isInvulnerable()) {
                 Item.create(inv_actions, "RED_TERRACOTTA", 1, 17, Message.getMessage("actions_god_disabled"));
             } else {
                 Item.create(inv_actions, "LIME_TERRACOTTA", 1, 17, Message.getMessage("actions_god_enabled"));
@@ -363,10 +358,10 @@ public class AdminUI {
         return inv_actions;
     }
 
-    public Inventory GUI_Kick(Player p, String target){
+    public Inventory GUI_Kick(Player p, Player target){
 
-        inventory_kick_name = Message.getMessage("inventory_kick").replace("{player}", target);
-        target_player = target;
+        String inventory_kick_name = Message.getMessage("inventory_kick").replace("{player}", target.getName());
+        target_player.put(p, target);
 
         Inventory inv_kick = Bukkit.createInventory(null, 27, inventory_kick_name);
 
@@ -385,10 +380,10 @@ public class AdminUI {
         return inv_kick;
     }
 
-    public Inventory GUI_Ban(Player p, String target){
+    public Inventory GUI_Ban(Player p, Player target){
 
-        inventory_ban_name = Message.getMessage("inventory_ban").replace("{player}", target);
-        target_player = target;
+        String inventory_ban_name = Message.getMessage("inventory_ban").replace("{player}", target.getName());
+        target_player.put(p, target);
 
         Inventory inv_ban = Bukkit.createInventory(null, 36, inventory_ban_name);
 
@@ -396,34 +391,34 @@ public class AdminUI {
             Item.create(inv_ban, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
         }
 
-        if(ban_years == 0){
+        if(ban_years.getOrDefault(p, 0) == 0){
             Item.create(inv_ban, "RED_STAINED_GLASS_PANE", 1, 12, Message.getMessage("ban_years"));
         }else{
-            Item.create(inv_ban, "CLOCK", ban_years, 12, Message.getMessage("ban_years"));
+            Item.create(inv_ban, "CLOCK", ban_years.getOrDefault(p,0), 12, Message.getMessage("ban_years"));
         }
 
-        if(ban_months == 0){
+        if(ban_months.getOrDefault(p,0) == 0){
             Item.create(inv_ban, "RED_STAINED_GLASS_PANE", 1, 13, Message.getMessage("ban_months"));
         }else{
-            Item.create(inv_ban, "CLOCK", ban_months, 13, Message.getMessage("ban_months"));
+            Item.create(inv_ban, "CLOCK", ban_months.getOrDefault(p,0), 13, Message.getMessage("ban_months"));
         }
 
-        if(ban_days == 0){
+        if(ban_days.getOrDefault(p, 0) == 0){
             Item.create(inv_ban, "RED_STAINED_GLASS_PANE", 1, 14, Message.getMessage("ban_days"));
         }else{
-            Item.create(inv_ban, "CLOCK", ban_days, 14, Message.getMessage("ban_days"));
+            Item.create(inv_ban, "CLOCK", ban_days.getOrDefault(p,0), 14, Message.getMessage("ban_days"));
         }
 
-        if(ban_hours == 0){
+        if(ban_hours.getOrDefault(p, 0) == 0){
             Item.create(inv_ban, "RED_STAINED_GLASS_PANE", 1, 15, Message.getMessage("ban_hours"));
         }else{
-            Item.create(inv_ban, "CLOCK", ban_hours, 15, Message.getMessage("ban_hours"));
+            Item.create(inv_ban, "CLOCK", ban_hours.getOrDefault(p,0), 15, Message.getMessage("ban_hours"));
         }
 
-        if(ban_minutes == 0){
+        if(ban_minutes.getOrDefault(p,0) == 0){
             Item.create(inv_ban, "RED_STAINED_GLASS_PANE", 1, 16, Message.getMessage("ban_minutes"));
         }else{
-            Item.create(inv_ban, "CLOCK", ban_minutes, 16, Message.getMessage("ban_minutes"));
+            Item.create(inv_ban, "CLOCK", ban_minutes.getOrDefault(p,0), 16, Message.getMessage("ban_minutes"));
         }
 
         Item.create(inv_ban, "WHITE_TERRACOTTA", 1, 30, Message.getMessage("ban_hacking"));
@@ -437,10 +432,10 @@ public class AdminUI {
         return inv_ban;
     }
 
-    public Inventory GUI_potions(Player p, String target){
+    public Inventory GUI_potions(Player p, Player target){
 
-        inventory_potions_name = Message.getMessage("inventory_potions").replace("{player}", target);
-        target_player = target;
+        String inventory_potions_name = Message.getMessage("inventory_potions").replace("{player}", target.getName());
+        target_player.put(p, target);
 
         Inventory inv_potions = Bukkit.createInventory(null, 36, inventory_potions_name);
 
@@ -462,21 +457,21 @@ public class AdminUI {
 
         }
 
-        Item.create(inv_potions, "CLOCK", duration, 31, Message.getMessage("potions_time"));
+        Item.create(inv_potions, "CLOCK", duration.getOrDefault(p,1), 31, Message.getMessage("potions_time"));
         Item.create(inv_potions, "RED_STAINED_GLASS_PANE", 1, 32, Message.getMessage("potions_remove_all"));
-        Item.create(inv_potions, "BEACON", level, 33, Message.getMessage("potions_level"));
+        Item.create(inv_potions, "BEACON", level.getOrDefault(p, 1), 33, Message.getMessage("potions_level"));
 
         Item.create(inv_potions, "REDSTONE_BLOCK", 1, 36, Message.getMessage("potions_back"));
 
         return inv_potions;
     }
 
-    public Inventory GUI_Spawner(Player p, String target){
+    public Inventory GUI_Spawner(Player p, Player target){
 
-        inventory_spawner_name = Message.getMessage("inventory_spawner").replace("{player}", target);
+        String inventory_spawner_name = Message.getMessage("inventory_spawner").replace("{player}", target.getName());
         Inventory inv_spawner = Bukkit.createInventory(null, 54, inventory_spawner_name);
 
-        target_player = target;
+        target_player.put(p, target);
 
         if (Bukkit.getVersion().contains("1.14")) {
             for(Material_Version_14 material : Material_Version_14.values()){
@@ -505,19 +500,17 @@ public class AdminUI {
         return inv_spawner;
     }
 
-    public Inventory GUI_Inventory(Player p, String target) {
+    public Inventory GUI_Inventory(Player p, Player target) {
 
-        inventory_inventory_name = Message.getMessage("inventory_inventory").replace("{player}", target);
-        target_player = target;
+        String inventory_inventory_name = Message.getMessage("inventory_inventory").replace("{player}", target.getName());
+        target_player.put(p, target);
 
         Inventory inv_inventory = Bukkit.createInventory(null, 54, inventory_inventory_name);
 
-        Player player_target = Bukkit.getServer().getPlayer(target);
+        if(target != null){
 
-        if(player_target != null){
-
-            ItemStack[] items = player_target.getInventory().getContents();
-            ItemStack[] armor = player_target.getInventory().getArmorContents();
+            ItemStack[] items = target.getInventory().getContents();
+            ItemStack[] armor = target.getInventory().getArmorContents();
 
             for(int i = 0; i < items.length; i++){
                 if(items[i] != null){
@@ -628,9 +621,9 @@ public class AdminUI {
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_god_disabled"));
             p.openInventory(GUI_Player(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_potions"))){
-            p.openInventory(GUI_potions(p, p.getName()));
+            p.openInventory(GUI_potions(p, p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_spawner"))){
-            p.openInventory(GUI_Spawner(p, p.getName()));
+            p.openInventory(GUI_Spawner(p, p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_kill"))){
             p.setHealth(0);
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_kill"));
@@ -673,9 +666,10 @@ public class AdminUI {
 
         if(clicked.getItemMeta().getLore() != null){
             if(clicked.getItemMeta().getLore().get(0).equals(Message.getMessage("players_lore"))){
-                Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()));
-                if(target_player != null){
-                    p.openInventory(GUI_Players_Settings(p,target_player));
+                Player target_p = Bukkit.getServer().getPlayer(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()));
+                if(target_p != null){
+                    target_player.put(p, target_p);
+                    p.openInventory(GUI_Players_Settings(p,target_p));
                 }else{
                     p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
                     p.closeInventory();
@@ -684,18 +678,16 @@ public class AdminUI {
         }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_back"))){
             p.openInventory(GUI_Main(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("players_previous"))){
-            page--;
+            page.put(p, page.get(p)-1);
             p.openInventory(GUI_Players(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("players_next"))){
-            page++;
+            page.put(p, page.get(p)+1);
             p.openInventory(GUI_Players(p));
         }
 
     }
 
-    public void clicked_players_settings(Player p, int slot, ItemStack clicked, Inventory inv, String title){
-
-        Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+    public void clicked_players_settings(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
         if(target_player != null){
             if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_back"))){
@@ -703,13 +695,13 @@ public class AdminUI {
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_info").replace("{player}", target_player.getName()))){
                 p.openInventory(GUI_Players_Settings(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_actions"))){
-                p.openInventory(GUI_Actions(p, target_player.getName()));
+                p.openInventory(GUI_Actions(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_spawner"))){
-                p.openInventory(GUI_Spawner(p, target_player.getName()));
+                p.openInventory(GUI_Spawner(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("players_settings_kick_player"))){
-                p.openInventory(GUI_Kick(p, target_player.getName()));
+                p.openInventory(GUI_Kick(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("players_settings_ban_player"))){
-                p.openInventory(GUI_Ban(p, target_player.getName()));
+                p.openInventory(GUI_Ban(p, target_player));
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
@@ -718,33 +710,31 @@ public class AdminUI {
 
     }
 
-    public void clicked_actions(Player p, int slot, ItemStack clicked, Inventory inv, String title){
-
-        Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+    public void clicked_actions(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
         if(target_player != null){
             if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_back"))){
                 p.openInventory(GUI_Players_Settings(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_info").replace("{player}", target_player.getName()))){
-                p.openInventory(GUI_Actions(p,target_player.getName()));
+                p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_survival"))){
                 target_player.setGameMode(GameMode.ADVENTURE);
-                p.openInventory(GUI_Actions(p,target_player.getName()));
+                p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_adventure"))){
                 target_player.setGameMode(GameMode.CREATIVE);
-                p.openInventory(GUI_Actions(p,target_player.getName()));
+                p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_creative"))){
                 target_player.setGameMode(GameMode.SPECTATOR);
-                p.openInventory(GUI_Actions(p,target_player.getName()));
+                p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_spectator"))){
                 target_player.setGameMode(GameMode.SURVIVAL);
-                p.openInventory(GUI_Actions(p,target_player.getName()));
+                p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_teleport_to_player"))){
                 p.closeInventory();
                 p.teleport(target_player.getLocation());
                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_teleport").replace("{player}", target_player.getName()));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_kill_player"))){
-                target_player.getPlayer().setHealth(0);
+                target_player.setHealth(0);
                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_kill").replace("{player}", target_player.getName()));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_burn_player"))){
                 target_player.setFireTicks(500);
@@ -766,16 +756,16 @@ public class AdminUI {
                 target_player.setInvulnerable(true);
                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_god_enabled").replace("{player}", target_player.getName()));
                 target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_god_enabled").replace("{player}", p.getName()));
-                p.openInventory(GUI_Actions(p,target_player.getName()));
+                p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_god_disabled"))){
                 target_player.setInvulnerable(false);
                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_god_disabled").replace("{player}", target_player.getName()));
                 target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_god_disabled").replace("{player}", p.getName()));
-                p.openInventory(GUI_Actions(p,target_player.getName()));
+                p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_potions"))){
-                p.openInventory(GUI_potions(p, target_player.getName()));
+                p.openInventory(GUI_potions(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_inventory"))){
-                p.openInventory(GUI_Inventory(p, target_player.getName()));
+                p.openInventory(GUI_Inventory(p, target_player));
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
@@ -784,9 +774,7 @@ public class AdminUI {
 
     }
 
-    public void clicked_kick(Player p, int slot, ItemStack clicked, Inventory inv, String title){
-
-        Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+    public void clicked_kick(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
         if(target_player != null){
             if(InventoryGUI.getClickedItem(clicked,Message.getMessage("kick_back"))){
@@ -844,9 +832,7 @@ public class AdminUI {
 
     }
 
-    public void clicked_ban(Player p, int slot, ItemStack clicked, Inventory inv, String title){
-
-        Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+    public void clicked_ban(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
         long mil_year = 31556952000L;
         long mil_month = 2592000000L;
@@ -854,7 +840,7 @@ public class AdminUI {
         long mil_hour = 3600000L;
         long mil_minute = 60000L;
 
-        Date time = new Date(System.currentTimeMillis()+(mil_minute*ban_minutes)+(mil_hour*ban_hours)+(mil_day*ban_days)+(mil_month*ban_months)+(mil_year*ban_years));
+        Date time = new Date(System.currentTimeMillis()+(mil_minute*ban_minutes.getOrDefault(p,0))+(mil_hour*ban_hours.getOrDefault(p,0))+(mil_day*ban_days.getOrDefault(p,0))+(mil_month*ban_months.getOrDefault(p,0))+(mil_year*ban_years.getOrDefault(p,0)));
 
         if(target_player != null){
             if(InventoryGUI.getClickedItem(clicked,Message.getMessage("ban_back"))){
@@ -910,223 +896,223 @@ public class AdminUI {
                     p.closeInventory();
                 }
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("ban_years"))){
-                switch (ban_years){
+                switch (ban_years.getOrDefault(p,0)){
                     case 0:
-                        ban_years = 1;
+                        ban_years.put(p, 1);
                         break;
                     case 1:
-                        ban_years = 2;
+                        ban_years.put(p, 2);
                         break;
                     case 2:
-                        ban_years = 3;
+                        ban_years.put(p, 3);
                         break;
                     case 3:
-                        ban_years = 4;
+                        ban_years.put(p, 4);
                         break;
                     case 4:
-                        ban_years = 5;
+                        ban_years.put(p, 5);
                         break;
                     case 5:
-                        ban_years = 6;
+                        ban_years.put(p, 6);
                         break;
                     case 6:
-                        ban_years = 7;
+                        ban_years.put(p, 7);
                         break;
                     case 7:
-                        ban_years = 8;
+                        ban_years.put(p, 8);
                         break;
                     case 8:
-                        ban_years = 9;
+                        ban_years.put(p, 9);
                         break;
                     case 9:
-                        ban_years = 10;
+                        ban_years.put(p, 10);
                         break;
                     case 10:
-                        ban_years = 15;
+                        ban_years.put(p, 15);
                         break;
                     case 15:
-                        ban_years = 20;
+                        ban_years.put(p, 20);
                         break;
                     case 20:
-                        ban_years = 30;
+                        ban_years.put(p, 30);
                         break;
                     case 30:
-                        ban_years = 0;
+                        ban_years.put(p, 0);
                         break;
                 }
-                p.openInventory(GUI_Ban(p, target_player.getName()));
+                p.openInventory(GUI_Ban(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("ban_months"))){
-                switch (ban_months){
+                switch (ban_months.getOrDefault(p,0)){
                     case 0:
-                        ban_months = 1;
+                        ban_months.put(p, 1);
                         break;
                     case 1:
-                        ban_months = 2;
+                        ban_months.put(p, 2);
                         break;
                     case 2:
-                        ban_months = 3;
+                        ban_months.put(p, 3);
                         break;
                     case 3:
-                        ban_months = 4;
+                        ban_months.put(p, 4);
                         break;
                     case 4:
-                        ban_months = 5;
+                        ban_months.put(p, 5);
                         break;
                     case 5:
-                        ban_months = 6;
+                        ban_months.put(p, 6);
                         break;
                     case 6:
-                        ban_months = 7;
+                        ban_months.put(p, 7);
                         break;
                     case 7:
-                        ban_months = 8;
+                        ban_months.put(p, 8);
                         break;
                     case 8:
-                        ban_months = 9;
+                        ban_months.put(p, 9);
                         break;
                     case 9:
-                        ban_months = 10;
+                        ban_months.put(p, 10);
                         break;
                     case 10:
-                        ban_months = 11;
+                        ban_months.put(p, 11);
                         break;
                     case 11:
-                        ban_months = 12;
+                        ban_months.put(p, 12);
                         break;
                     case 12:
-                        ban_months = 0;
+                        ban_months.put(p, 0);
                         break;
                 }
-                p.openInventory(GUI_Ban(p, target_player.getName()));
+                p.openInventory(GUI_Ban(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("ban_days"))){
-                switch (ban_days){
+                switch (ban_days.getOrDefault(p,0)){
                     case 0:
-                        ban_days = 1;
+                        ban_days.put(p, 1);
                         break;
                     case 1:
-                        ban_days = 2;
+                        ban_days.put(p, 2);
                         break;
                     case 2:
-                        ban_days = 3;
+                        ban_days.put(p, 3);
                         break;
                     case 3:
-                        ban_days = 4;
+                        ban_days.put(p, 4);
                         break;
                     case 4:
-                        ban_days = 5;
+                        ban_days.put(p, 5);
                         break;
                     case 5:
-                        ban_days = 6;
+                        ban_days.put(p, 6);
                         break;
                     case 6:
-                        ban_days = 7;
+                        ban_days.put(p, 7);
                         break;
                     case 7:
-                        ban_days = 8;
+                        ban_days.put(p, 8);
                         break;
                     case 8:
-                        ban_days = 9;
+                        ban_days.put(p, 9);
                         break;
                     case 9:
-                        ban_days = 10;
+                        ban_days.put(p, 10);
                         break;
                     case 10:
-                        ban_days = 15;
+                        ban_days.put(p, 15);
                         break;
                     case 15:
-                        ban_days = 20;
+                        ban_days.put(p, 20);
                         break;
                     case 20:
-                        ban_days = 30;
+                        ban_days.put(p, 30);
                         break;
                     case 30:
-                        ban_days = 0;
+                        ban_days.put(p, 0);
                         break;
                 }
-                p.openInventory(GUI_Ban(p, target_player.getName()));
+                p.openInventory(GUI_Ban(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("ban_hours"))){
-                switch (ban_hours){
+                switch (ban_hours.getOrDefault(p, 0)){
                     case 0:
-                        ban_hours = 1;
+                        ban_hours.put(p, 1);
                         break;
                     case 1:
-                        ban_hours = 2;
+                        ban_hours.put(p, 2);
                         break;
                     case 2:
-                        ban_hours = 3;
+                        ban_hours.put(p, 3);
                         break;
                     case 3:
-                        ban_hours = 4;
+                        ban_hours.put(p, 4);
                         break;
                     case 4:
-                        ban_hours = 5;
+                        ban_hours.put(p, 5);
                         break;
                     case 5:
-                        ban_hours = 6;
+                        ban_hours.put(p, 6);
                         break;
                     case 6:
-                        ban_hours = 7;
+                        ban_hours.put(p, 7);
                         break;
                     case 7:
-                        ban_hours = 8;
+                        ban_hours.put(p, 8);
                         break;
                     case 8:
-                        ban_hours = 9;
+                        ban_hours.put(p, 9);
                         break;
                     case 9:
-                        ban_hours = 10;
+                        ban_hours.put(p, 10);
                         break;
                     case 10:
-                        ban_hours = 15;
+                        ban_hours.put(p, 15);
                         break;
                     case 15:
-                        ban_hours = 20;
+                        ban_hours.put(p, 20);
                         break;
                     case 20:
-                        ban_hours = 0;
+                        ban_hours.put(p, 0);
                         break;
                 }
-                p.openInventory(GUI_Ban(p, target_player.getName()));
+                p.openInventory(GUI_Ban(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("ban_minutes"))){
-                switch (ban_minutes){
+                switch (ban_minutes.getOrDefault(p,0)){
                     case 0:
-                        ban_minutes = 5;
+                        ban_minutes.put(p, 5);
                         break;
                     case 5:
-                        ban_minutes = 10;
+                        ban_minutes.put(p, 10);
                         break;
                     case 10:
-                        ban_minutes = 15;
+                        ban_minutes.put(p, 15);
                         break;
                     case 15:
-                        ban_minutes = 20;
+                        ban_minutes.put(p, 20);
                         break;
                     case 20:
-                        ban_minutes = 25;
+                        ban_minutes.put(p, 25);
                         break;
                     case 25:
-                        ban_minutes = 30;
+                        ban_minutes.put(p, 30);
                         break;
                     case 30:
-                        ban_minutes = 35;
+                        ban_minutes.put(p, 35);
                         break;
                     case 35:
-                        ban_minutes = 40;
+                        ban_minutes.put(p, 40);
                         break;
                     case 40:
-                        ban_minutes = 45;
+                        ban_minutes.put(p, 45);
                         break;
                     case 45:
-                        ban_minutes = 50;
+                        ban_minutes.put(p, 50);
                         break;
                     case 50:
-                        ban_minutes = 55;
+                        ban_minutes.put(p, 55);
                         break;
                     case 55:
-                        ban_minutes = 0;
+                        ban_minutes.put(p, 0);
                         break;
                 }
-                p.openInventory(GUI_Ban(p, target_player.getName()));
+                p.openInventory(GUI_Ban(p, target_player));
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
@@ -1135,9 +1121,7 @@ public class AdminUI {
 
     }
 
-    public void clicked_potions(Player p, int slot, ItemStack clicked, Inventory inv, String title){
-
-        Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+    public void clicked_potions(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
         TargetPlayer targetPlayer = new TargetPlayer();
 
@@ -1146,62 +1130,62 @@ public class AdminUI {
                 if(p.getName().equals(target_player.getName())){
                     p.openInventory(GUI_Player(p));
                 }else{
-                    p.openInventory(GUI_Actions(p,target_player.getName()));
+                    p.openInventory(GUI_Actions(p,target_player));
                 }
 
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_time"))){
-                switch (duration){
+                switch (duration.getOrDefault(p, 1)){
                     case 1:
-                        duration = 2;
+                        duration.put(p, 2);
                         break;
                     case 2:
-                        duration = 3;
+                        duration.put(p, 3);
                         break;
                     case 3:
-                        duration = 4;
+                        duration.put(p, 4);
                         break;
                     case 4:
-                        duration = 5;
+                        duration.put(p, 5);
                         break;
                     case 5:
-                        duration = 7;
+                        duration.put(p, 7);
                         break;
                     case 7:
-                        duration = 10;
+                        duration.put(p, 10);
                         break;
                     case 10:
-                        duration = 15;
+                        duration.put(p, 15);
                         break;
                     case 15:
-                        duration = 20;
+                        duration.put(p, 20);
                         break;
                     case 20:
-                        duration = 1000000;
+                        duration.put(p, 1000000);
                         break;
                     case 1000000:
-                        duration = 1;
+                        duration.put(p, 1);
                         break;
                 }
-                p.openInventory(GUI_potions(p, target_player.getName()));
+                p.openInventory(GUI_potions(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_level"))){
-                switch (level){
+                switch (level.getOrDefault(p, 1)){
                     case 1:
-                        level = 2;
+                        level.put(p, 2);
                         break;
                     case 2:
-                        level = 3;
+                        level.put(p, 3);
                         break;
                     case 3:
-                        level = 4;
+                        level.put(p, 4);
                         break;
                     case 4:
-                        level = 5;
+                        level.put(p, 5);
                         break;
                     case 5:
-                        level = 1;
+                        level.put(p, 1);
                         break;
                 }
-                p.openInventory(GUI_potions(p, target_player.getName()));
+                p.openInventory(GUI_potions(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_remove_all"))) {
                 for (PotionEffect effect : target_player.getActivePotionEffects()){
                     target_player.removePotionEffect(effect.getType());
@@ -1214,51 +1198,51 @@ public class AdminUI {
                     p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_potions_remove").replace("{player}", target_player.getName()));
                 }
 
-                p.openInventory(GUI_potions(p, target_player.getName()));
+                p.openInventory(GUI_potions(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_night_vision"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.NIGHT_VISION, "potions_night_vision", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.NIGHT_VISION, "potions_night_vision", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_invisibility"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.INVISIBILITY, "potions_invisibility", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.INVISIBILITY, "potions_invisibility", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_jump_boost"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.JUMP, "potions_jump_boost", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.JUMP, "potions_jump_boost", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_fire_resistance"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.FIRE_RESISTANCE, "potions_fire_resistance", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.FIRE_RESISTANCE, "potions_fire_resistance", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_speed"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SPEED, "potions_speed", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SPEED, "potions_speed", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_slowness"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SLOW, "potions_slowness", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SLOW, "potions_slowness", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_water_breathing"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.WATER_BREATHING, "potions_water_breathing", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.WATER_BREATHING, "potions_water_breathing", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_instant_health"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.HEAL, "potions_instant_health", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.HEAL, "potions_instant_health", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_instant_damage"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.HARM, "potions_instant_damage", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.HARM, "potions_instant_damage", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_poison"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.POISON, "potions_poison", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.POISON, "potions_poison", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_regeneration"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.REGENERATION, "potions_regeneration", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.REGENERATION, "potions_regeneration", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_strength"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.INCREASE_DAMAGE, "potions_strength", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.INCREASE_DAMAGE, "potions_strength", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_weakness"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.WEAKNESS, "potions_weakness", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.WEAKNESS, "potions_weakness", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_luck"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.LUCK, "potions_luck", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.LUCK, "potions_luck", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_slow_falling"))){
-                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SLOW_FALLING, "potions_slow_falling", duration, level);
+                targetPlayer.setPotionEffect(p, target_player, PotionEffectType.SLOW_FALLING, "potions_slow_falling", duration.getOrDefault(p, 1), level.getOrDefault(p, 1));
                 p.closeInventory();
             }
         }else{
@@ -1267,9 +1251,7 @@ public class AdminUI {
         }
     }
 
-    public void clicked_spawner(Player p, int slot, ItemStack clicked, Inventory inv, String title){
-
-        Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+    public void clicked_spawner(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
         if(target_player != null){
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("spawner_back"))){
@@ -1393,14 +1375,13 @@ public class AdminUI {
         }
     }
 
-    public void clicked_inventory(Player p, int slot, ItemStack clicked, Inventory inv, String title){
-        Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(title));
+    public void clicked_inventory(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
         if(target_player != null){
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("inventory_back"))){
-                p.openInventory(GUI_Actions(p, target_player.getName()));
+                p.openInventory(GUI_Actions(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("inventory_refresh"))){
-                p.openInventory(GUI_Inventory(p, target_player.getName()));
+                p.openInventory(GUI_Inventory(p, target_player));
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
