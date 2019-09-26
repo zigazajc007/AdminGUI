@@ -48,7 +48,7 @@ public class AdminUI {
         Player random_player = Bukkit.getOnlinePlayers().stream().findAny().get();
 
         for(int i = 1; i < 27; i++){
-                Item.create(inv_main, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+                Item.create(inv_main, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         Item.createPlayerHead(inv_main, p.getName(), 1, 12, Message.getMessage("main_player").replace("{player}", p.getName()));
@@ -71,7 +71,7 @@ public class AdminUI {
         Inventory inv_player = Bukkit.createInventory(null, 9, inventory_player_name);
 
         for(int i = 1; i < 9; i++){
-            Item.create(inv_player, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+            Item.create(inv_player, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         if(p.hasPermission("admingui.heal")) {
@@ -144,7 +144,7 @@ public class AdminUI {
         Inventory inv_world = Bukkit.createInventory(null, 27, Message.getMessage("inventory_world"));
 
         for(int i = 1; i < 27; i++){
-            Item.create(inv_world, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+            Item.create(inv_world, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         if(p.hasPermission("admingui.time")) {
@@ -193,7 +193,7 @@ public class AdminUI {
         pages.put(p, (int) Math.ceil((float)online / 45));
 
         for (int i = 46; i <= 53; i++){
-            Item.create(inv_players, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+            Item.create(inv_players, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         int player_slot = (page.getOrDefault(p,1)-1) * 45;
@@ -203,7 +203,7 @@ public class AdminUI {
                 Item.createPlayerHead(inv_players, pl.get(player_slot),1, i+1, Message.getMessage("players_color").replace("{player}", pl.get(player_slot)), Message.getMessage("players_lore"));
                 player_slot++;
             }else{
-                Item.create(inv_players, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i+1, "Empty");
+                Item.create(inv_players, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i+1, " ");
             }
         }
 
@@ -230,7 +230,7 @@ public class AdminUI {
         Inventory inv_players_settings = Bukkit.createInventory(null, 27, inventory_players_settings_name);
 
         for(int i = 1; i < 27; i++){
-                Item.create(inv_players_settings, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+                Item.create(inv_players_settings, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         if(p.hasPermission("admingui.info")) {
@@ -272,7 +272,7 @@ public class AdminUI {
         Inventory inv_actions = Bukkit.createInventory(null, 36, inventory_actions_name);
 
         for(int i = 1; i < 36; i++){
-            Item.create(inv_actions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+            Item.create(inv_actions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         if(p.hasPermission("admingui.info")) {
@@ -366,7 +366,7 @@ public class AdminUI {
         Inventory inv_kick = Bukkit.createInventory(null, 27, inventory_kick_name);
 
         for (int i = 1; i < 27; i++){
-                Item.create(inv_kick, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+                Item.create(inv_kick, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         Item.create(inv_kick, "WHITE_TERRACOTTA", 1, 10, Message.getMessage("kick_hacking"));
@@ -388,7 +388,7 @@ public class AdminUI {
         Inventory inv_ban = Bukkit.createInventory(null, 36, inventory_ban_name);
 
         for (int i = 1; i < 36; i++){
-            Item.create(inv_ban, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+            Item.create(inv_ban, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         if(ban_years.getOrDefault(p, 0) == 0){
@@ -440,7 +440,7 @@ public class AdminUI {
         Inventory inv_potions = Bukkit.createInventory(null, 36, inventory_potions_name);
 
         for (int i = 1; i < 36; i++){
-            Item.create(inv_potions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+            Item.create(inv_potions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         if (Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.13")) {
@@ -543,7 +543,7 @@ public class AdminUI {
         }
 
         for (int i = 42; i < 54; i++){
-            Item.create(inv_inventory, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, "Empty");
+            Item.create(inv_inventory, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
         Item.create(inv_inventory, "GREEN_TERRACOTTA", 1, 46, Message.getMessage("inventory_refresh"));
