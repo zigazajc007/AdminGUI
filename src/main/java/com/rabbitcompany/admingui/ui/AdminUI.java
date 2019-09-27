@@ -507,7 +507,7 @@ public class AdminUI {
 
         Inventory inv_inventory = Bukkit.createInventory(null, 54, inventory_inventory_name);
 
-        if(target != null){
+        if(target.isOnline()){
 
             ItemStack[] items = target.getInventory().getContents();
             ItemStack[] armor = target.getInventory().getArmorContents();
@@ -689,7 +689,7 @@ public class AdminUI {
 
     public void clicked_players_settings(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
-        if(target_player != null){
+        if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_back"))){
                 p.openInventory(GUI_Players(p));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_info").replace("{player}", target_player.getName()))){
@@ -712,7 +712,7 @@ public class AdminUI {
 
     public void clicked_actions(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
-        if(target_player != null){
+        if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_back"))){
                 p.openInventory(GUI_Players_Settings(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_info").replace("{player}", target_player.getName()))){
@@ -776,7 +776,7 @@ public class AdminUI {
 
     public void clicked_kick(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
-        if(target_player != null){
+        if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked,Message.getMessage("kick_back"))){
                 p.openInventory(GUI_Players_Settings(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("kick_hacking"))){
@@ -842,7 +842,7 @@ public class AdminUI {
 
         Date time = new Date(System.currentTimeMillis()+(mil_minute*ban_minutes.getOrDefault(p,0))+(mil_hour*ban_hours.getOrDefault(p,0))+(mil_day*ban_days.getOrDefault(p,0))+(mil_month*ban_months.getOrDefault(p,0))+(mil_year*ban_years.getOrDefault(p,0)));
 
-        if(target_player != null){
+        if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked,Message.getMessage("ban_back"))){
                 p.openInventory(GUI_Players_Settings(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("ban_hacking"))){
@@ -1125,7 +1125,7 @@ public class AdminUI {
 
         TargetPlayer targetPlayer = new TargetPlayer();
 
-        if(target_player != null){
+        if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("potions_back"))){
                 if(p.getName().equals(target_player.getName())){
                     p.openInventory(GUI_Player(p));
@@ -1253,7 +1253,7 @@ public class AdminUI {
 
     public void clicked_spawner(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
 
-        if(target_player != null){
+        if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("spawner_back"))){
                 if(p.getName().equals(target_player.getName())){
                     p.openInventory(GUI_Player(p));
@@ -1375,13 +1375,28 @@ public class AdminUI {
         }
     }
 
-    public void clicked_inventory(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
+    public void clicked_inventory(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player, boolean left_click){
 
-        if(target_player != null){
+        if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("inventory_back"))){
                 p.openInventory(GUI_Actions(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("inventory_refresh"))){
                 p.openInventory(GUI_Inventory(p, target_player));
+            }else{
+                if(p.hasPermission("admingui.inventory.edit")){
+                    if(left_click){
+                        target_player.getInventory().addItem(clicked);
+                    }else{
+                        if(clicked.getType() == target_player.getInventory().getItem(slot).getType()){
+                            target_player.getInventory().setItem(slot, null);
+                        }else{
+                            p.sendMessage("Clicked: " + clicked.getType());
+                            p.sendMessage("Target Player: " + target_player.getInventory().getItem(slot).getType());
+                        }
+                    }
+                    target_player.updateInventory();
+                    p.openInventory(GUI_Inventory(p, target_player));
+                }
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));

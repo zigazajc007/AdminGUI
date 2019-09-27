@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="68fba916-2c46-44c3-b849-1655c59b9b44" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/listeners/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/listeners/InventoryClickListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/ui/AdminUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/ui/AdminUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/listeners/InventoryClickListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/listeners/InventoryClickListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/ui/AdminUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/ui/AdminUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
     </list>
@@ -131,7 +135,8 @@
       <workItem from="1569413993546" duration="3016000" />
       <workItem from="1569500125784" duration="93000" />
       <workItem from="1569500263148" duration="10911000" />
-      <workItem from="1569516759007" duration="369000" />
+      <workItem from="1569516759007" duration="1311000" />
+      <workItem from="1569606455057" duration="12933000" />
     </task>
     <task id="LOCAL-00001" summary="Performance improvement">
       <created>1569016445205</created>
@@ -189,7 +194,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569510885190</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Replaced every &quot;Empty&quot; text with Empty box in Admin GUI inventory.">
+      <created>1569517276578</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1569517276578</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,6 +227,7 @@
     <MESSAGE value="Fixed Inventory edit and added display names to items" />
     <MESSAGE value="Removed bunch of static methods and variables (Reduce RAM usage)" />
     <MESSAGE value="Fixed freeze bug when 2 or more players are using Admin GUI at the same time." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed freeze bug when 2 or more players are using Admin GUI at the same time." />
+    <MESSAGE value="Replaced every &quot;Empty&quot; text with Empty box in Admin GUI inventory." />
+    <option name="LAST_COMMIT_MESSAGE" value="Replaced every &quot;Empty&quot; text with Empty box in Admin GUI inventory." />
   </component>
 </project>
