@@ -1389,9 +1389,6 @@ public class AdminUI {
                     }else{
                         if(clicked.getType() == target_player.getInventory().getItem(slot).getType()){
                             target_player.getInventory().setItem(slot, null);
-                        }else{
-                            p.sendMessage("Clicked: " + clicked.getType());
-                            p.sendMessage("Target Player: " + target_player.getInventory().getItem(slot).getType());
                         }
                     }
                     target_player.updateInventory();
