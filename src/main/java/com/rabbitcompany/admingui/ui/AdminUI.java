@@ -1,5 +1,6 @@
 package com.rabbitcompany.admingui.ui;
 
+import com.rabbitcompany.admingui.AdminGUI;
 import com.rabbitcompany.admingui.utils.*;
 import com.rabbitcompany.admingui.utils.potions.Version_12;
 import com.rabbitcompany.admingui.utils.potions.Version_14;
@@ -234,17 +235,21 @@ public class AdminUI {
         }
 
         if(p.hasPermission("admingui.info")) {
-            Item.createPlayerHead(inv_players_settings, target_player.getName(), 1, 5, Message.getMessage("players_settings_info").replace("{player}", target_player.getName()), Message.chat("&eHeal: " + Math.round(target_player.getHealth())), Message.chat("&7Feed: " + Math.round(target_player.getFoodLevel())), Message.chat("&aGamemode: " + target_player.getGameMode().toString()), Message.chat("&5IP: " + target_player.getAddress()));
+            if(AdminGUI.vault){
+                Item.createPlayerHead(inv_players_settings, target_player.getName(), 1, 5, Message.getMessage("players_settings_info").replace("{player}", target_player.getName()), Message.chat("&eHeal: " + Math.round(target_player.getHealth())), Message.chat("&7Feed: " + Math.round(target_player.getFoodLevel())), Message.chat("&2Money: " + AdminGUI.getEconomy().format(AdminGUI.getEconomy().getBalance(target_player.getName()))) ,Message.chat("&aGamemode: " + target_player.getGameMode().toString()), Message.chat("&5IP: " + target_player.getAddress()));
+            }else{
+                Item.createPlayerHead(inv_players_settings, target_player.getName(), 1, 5, Message.getMessage("players_settings_info").replace("{player}", target_player.getName()), Message.chat("&eHeal: " + Math.round(target_player.getHealth())), Message.chat("&7Feed: " + Math.round(target_player.getFoodLevel())), Message.chat("&aGamemode: " + target_player.getGameMode().toString()), Message.chat("&5IP: " + target_player.getAddress()));
+            }
         }else{
             Item.createPlayerHead(inv_players_settings, target_player.getName(), 1, 5, Message.getMessage("players_settings_info").replace("{player}", target_player.getName()));
         }
 
         Item.create(inv_players_settings, "DIAMOND_SWORD", 1, 11, Message.getMessage("players_settings_actions"));
 
-        if(p.hasPermission("admingui.spawner.other")) {
-            Item.create(inv_players_settings, "SPAWNER", 1, 13, Message.getMessage("players_settings_spawner"));
+        if(p.hasPermission("admingui.money.other")) {
+            Item.create(inv_players_settings, "PAPER", 1, 13, Message.getMessage("players_settings_money"));
         }else{
-            Item.create(inv_players_settings, "RED_STAINED_GLASS_PANE", 13, 25,  Message.getMessage("permission"));
+            Item.create(inv_players_settings, "RED_STAINED_GLASS_PANE", 1, 13,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.kick.other")) {
@@ -276,7 +281,11 @@ public class AdminUI {
         }
 
         if(p.hasPermission("admingui.info")) {
-            Item.createPlayerHead(inv_actions, target.getName(), 1, 5, Message.getMessage("actions_info").replace("{player}", target.getName()), Message.chat("&eHeal: " + Math.round(target.getHealth())), Message.chat("&7Feed: " + Math.round(target.getFoodLevel())), Message.chat("&aGamemode: " + target.getGameMode().toString()), Message.chat("&5IP: " + target.getAddress()));
+            if(AdminGUI.vault){
+                Item.createPlayerHead(inv_actions, target.getName(), 1, 5, Message.getMessage("players_settings_info").replace("{player}", target.getName()), Message.chat("&eHeal: " + Math.round(target.getHealth())), Message.chat("&7Feed: " + Math.round(target.getFoodLevel())), Message.chat("&2Money: " + AdminGUI.getEconomy().format(AdminGUI.getEconomy().getBalance(target.getName()))) ,Message.chat("&aGamemode: " + target.getGameMode().toString()), Message.chat("&5IP: " + target.getAddress()));
+            }else{
+                Item.createPlayerHead(inv_actions, target.getName(), 1, 5, Message.getMessage("players_settings_info").replace("{player}", target.getName()), Message.chat("&eHeal: " + Math.round(target.getHealth())), Message.chat("&7Feed: " + Math.round(target.getFoodLevel())), Message.chat("&aGamemode: " + target.getGameMode().toString()), Message.chat("&5IP: " + target.getAddress()));
+            }
         }else{
             Item.createPlayerHead(inv_actions, target.getName(), 1, 5, Message.getMessage("actions_info").replace("{player}", target.getName()));
         }
@@ -335,8 +344,8 @@ public class AdminUI {
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 23,  Message.getMessage("permission"));
         }
 
-        if(p.hasPermission("admingui.burn.other")) {
-            Item.create(inv_actions, "FLINT_AND_STEEL", 1, 25, Message.getMessage("actions_burn_player"));
+        if(p.hasPermission("admingui.spawner.other")) {
+            Item.create(inv_actions, "SPAWNER", 1, 25, Message.getMessage("actions_spawner"));
         }else{
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 25,  Message.getMessage("permission"));
         }
@@ -351,6 +360,12 @@ public class AdminUI {
             Item.create(inv_actions, "BOOK", 1, 29, Message.getMessage("actions_inventory"));
         }else{
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 29,  Message.getMessage("permission"));
+        }
+
+        if(p.hasPermission("admingui.burn.other")) {
+            Item.create(inv_actions, "FLINT_AND_STEEL", 1, 31, Message.getMessage("actions_burn_player"));
+        }else{
+            Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 31,  Message.getMessage("permission"));
         }
 
         Item.create(inv_actions, "REDSTONE_BLOCK", 1, 36, Message.getMessage("actions_back"));
@@ -498,6 +513,33 @@ public class AdminUI {
         Item.create(inv_spawner, "REDSTONE_BLOCK", 1, 54, Message.getMessage("spawner_back"));
 
         return inv_spawner;
+    }
+
+    public Inventory GUI_Money(Player p, Player target){
+
+        String inventory_money_name = Message.getMessage("inventory_money").replace("{player}", target.getName());
+        target_player.put(p, target);
+
+        Inventory inv_money = Bukkit.createInventory(null, 27, inventory_money_name);
+
+        if(target.isOnline()){
+
+            for(int i = 1; i < 27; i++){
+                Item.create(inv_money, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
+            }
+
+            Item.create(inv_money, "PAPER", 1, 12, Message.getMessage("money_give"));
+            Item.create(inv_money, "BOOK", 1, 14, Message.getMessage("money_set"));
+            Item.create(inv_money, "PAPER", 1, 16, Message.getMessage("money_take"));
+
+        }else{
+            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
+            p.closeInventory();
+        }
+
+        Item.create(inv_money, "REDSTONE_BLOCK", 1, 27, Message.getMessage("money_back"));
+
+        return inv_money;
     }
 
     public Inventory GUI_Inventory(Player p, Player target) {
@@ -696,8 +738,8 @@ public class AdminUI {
                 p.openInventory(GUI_Players_Settings(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_actions"))){
                 p.openInventory(GUI_Actions(p, target_player));
-            }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_spawner"))){
-                p.openInventory(GUI_Spawner(p, target_player));
+            }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("players_settings_money"))){
+                p.openInventory(GUI_Money(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("players_settings_kick_player"))){
                 p.openInventory(GUI_Kick(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("players_settings_ban_player"))){
@@ -764,6 +806,8 @@ public class AdminUI {
                 p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_potions"))){
                 p.openInventory(GUI_potions(p, target_player));
+            }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("actions_spawner"))){
+                p.openInventory(GUI_Spawner(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_inventory"))){
                 p.openInventory(GUI_Inventory(p, target_player));
             }
@@ -1375,6 +1419,23 @@ public class AdminUI {
         }
     }
 
+    public void clicked_money(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
+        if(target_player.isOnline()){
+            if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_back"))){
+                p.openInventory(GUI_Players_Settings(p, target_player));
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_give"))){
+
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_set"))){
+
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_take"))){
+
+            }
+        }else{
+            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
+            p.closeInventory();
+        }
+    }
+
     public void clicked_inventory(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player, boolean left_click){
 
         if(target_player.isOnline()){
@@ -1387,7 +1448,7 @@ public class AdminUI {
                     if(left_click){
                         target_player.getInventory().addItem(clicked);
                     }else{
-                        if(clicked.getType() == target_player.getInventory().getItem(slot).getType()){
+                        if(clicked.getType() == target_player.getInventory().getItem(slot).getType() && clicked.getAmount() == target_player.getInventory().getItem(slot).getAmount()){
                             target_player.getInventory().setItem(slot, null);
                         }
                     }

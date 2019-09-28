@@ -6,10 +6,12 @@ import com.rabbitcompany.admingui.listeners.PlayerJoinListener;
 import com.rabbitcompany.admingui.listeners.PlayerLoginListener;
 import com.rabbitcompany.admingui.utils.Message;
 import com.rabbitcompany.admingui.utils.Updater;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -20,6 +22,10 @@ import java.io.IOException;
 public class AdminGUI extends JavaPlugin {
 
     private static AdminGUI instance;
+
+    //VaultAPI
+    private static Economy econ = null;
+    public static boolean vault = false;
 
     private File l = null;
     private YamlConfiguration lang = new YamlConfiguration();
@@ -37,8 +43,14 @@ public class AdminGUI extends JavaPlugin {
 
         //bStats
         MetricsLite metricsLite = new MetricsLite(this);
+
         //Updater
         updater = new SpigotUpdater(this, 71157);
+
+        //VaultAPI
+        if(setupEconomy()){
+            vault = true;
+        }
 
         //Check for updates
         Updater.sendConsole();
@@ -55,6 +67,23 @@ public class AdminGUI extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getConsoleSender().sendMessage(Message.chat("&7[&cAdmin GUI&7] &4Plugin is disabled!"));
+    }
+
+    //VaultAPI
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return true;
+    }
+
+    public static Economy getEconomy() {
+        return econ;
     }
 
     private void mkdir(){
@@ -89,4 +118,3 @@ public class AdminGUI extends JavaPlugin {
         return instance;
     }
 }
-

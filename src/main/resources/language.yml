@@ -55,6 +55,7 @@ inventory_kick: "&8&lKick &2&l{player}"
 inventory_ban: "&8&lBan &2&l{player}"
 inventory_potions: "&c&lPotions &2&l{player}"
 inventory_spawner: "&8&lSpawner &2&l{player}"
+inventory_money: "&2&lMoney &2&l{player}"
 inventory_inventory: "&a&lInventory &2&l{player}"
 #----------------------------------------------------------
 #                       Admin GUI
@@ -103,7 +104,7 @@ players_back: "&c&lBack"
 #----------------------------------------------------------
 players_settings_info: "&2&l{player}"
 players_settings_actions: "&9&lActions"
-players_settings_spawner: "&8&lSpawner"
+players_settings_money: "&2&lMoney"
 players_settings_kick_player: "&8&lKick player"
 players_settings_ban_player: "&8&lBan player"
 players_settings_back: "&c&lBack"
@@ -124,6 +125,7 @@ actions_teleport_player_to_you: "&d&lTeleport player to you"
 actions_god_enabled: "&a&lGod"
 actions_god_disabled: "&c&lGod"
 actions_potions: "&c&lPotions"
+actions_spawner: "&8&lSpawner"
 actions_inventory: "&a&lInventory"
 actions_back: "&c&lBack"
 #----------------------------------------------------------
@@ -235,6 +237,13 @@ spawner_zombie: "&c&lZombie"
 spawner_zombie_pigman: "&c&lZombie Pigman"
 spawner_zombie_villager: "&c&lZombie Villager"
 spawner_back: "&c&lBack"
+#----------------------------------------------------------
+#                      Money GUI
+#----------------------------------------------------------
+money_give: "&2&lGive"
+money_set: "&9&lSet"
+money_take: "&c&lTake"
+money_back: "&c&lBack"
 #----------------------------------------------------------
 #                    Inventory GUI
 #----------------------------------------------------------

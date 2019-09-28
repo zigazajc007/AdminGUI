@@ -27,7 +27,7 @@ public class InventoryClickListener implements Listener {
         Player p = (Player) e.getWhoClicked();
 
         try{
-            if(title.equals(Message.getMessage("inventory_main")) || title.equals(Message.getMessage("inventory_player").replace("{player}", player)) || title.equals(Message.getMessage("inventory_world")) || title.equals(Message.getMessage("inventory_players")) || title.equals(Message.getMessage("players_color").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_actions").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_kick").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_ban").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_potions").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_spawner").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_inventory").replace("{player}", adminUI.target_player.get(p).getName()))) {
+            if(title.equals(Message.getMessage("inventory_main")) || title.equals(Message.getMessage("inventory_player").replace("{player}", player)) || title.equals(Message.getMessage("inventory_world")) || title.equals(Message.getMessage("inventory_players")) || title.equals(Message.getMessage("players_color").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_actions").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_kick").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_ban").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_potions").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_spawner").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_inventory").replace("{player}", adminUI.target_player.get(p).getName())) || title.equals(Message.getMessage("inventory_money").replace("{player}", adminUI.target_player.get(p).getName()))) {
                 e.setCancelled(true);
 
                 if (title.equals(Message.getMessage("inventory_main"))) {
@@ -86,7 +86,12 @@ public class InventoryClickListener implements Listener {
                     if (e.getCurrentItem() != null) {
                         adminUI.clicked_spawner(p, e.getSlot(), e.getCurrentItem(), e.getInventory(), adminUI.target_player.get(p));
                     }
-                }else if (title.equals(Message.getMessage("inventory_inventory").replace("{player}", adminUI.target_player.get(p).getName()))){
+                }else if(title.equals(Message.getMessage("inventory_money").replace("{player}", adminUI.target_player.get(p).getName()))){
+
+                    if (e.getCurrentItem() != null) {
+                        adminUI.clicked_money(p, e.getSlot(), e.getCurrentItem(), e.getInventory(), adminUI.target_player.get(p));
+                    }
+                } else if (title.equals(Message.getMessage("inventory_inventory").replace("{player}", adminUI.target_player.get(p).getName()))){
 
                     if(e.getCurrentItem() != null){
                         if(e.isLeftClick()){
