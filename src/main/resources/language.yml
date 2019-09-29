@@ -42,7 +42,9 @@ prefix: "&7[&cAdmin GUI&7] "
 #----------------------------------------------------------
 permission: "&cYou don't have permission to do this!"
 is_not_a_player: "&c{player} isn't a player!"
+is_not_a_number: "&c{number} isn't a number!"
 wrong_arguments: "&cYou can only use /admin or /admin <player>"
+vault_required: "&cYou don't have installed Vault to complete this action!"
 #----------------------------------------------------------
 #                    Inventory names
 #----------------------------------------------------------
@@ -56,6 +58,9 @@ inventory_ban: "&8&lBan &2&l{player}"
 inventory_potions: "&c&lPotions &2&l{player}"
 inventory_spawner: "&8&lSpawner &2&l{player}"
 inventory_money: "&2&lMoney &2&l{player}"
+inventory_give: "&2&lMoney Give {player}"
+inventory_set: "&2&lMoney &9&lSet &2&l{player}"
+inventory_take: "&2&lMoney &c&lTake &2&l{player}"
 inventory_inventory: "&a&lInventory &2&l{player}"
 #----------------------------------------------------------
 #                       Admin GUI
@@ -285,3 +290,8 @@ message_maintenance_disabled: "&aMaintenance mode is now &c&lDisabled."
 message_player_not_found: "&cPlayer is not available right now!"
 message_ban_bypass: "&cYou can not ban this player!"
 message_kick_bypass: "&cYou can not kick this player!"
+message_player_give: "&aYou were given {amount} to {player} and now he has {balance}"
+message_player_set: "&aYou just set {player} money to {amount}"
+message_player_take: "&aYou just take {amount} from {player} and now he has {balance}"
+message_transaction_error: "&cSomething went wrong with transaction!"
+message_take_error: "&cYou can't take more money then player have!"

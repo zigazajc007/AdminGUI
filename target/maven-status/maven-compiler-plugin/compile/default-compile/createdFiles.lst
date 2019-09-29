@@ -26,6 +26,7 @@ com\rabbitcompany\admingui\listeners\PlayerLoginListener.class
 com\rabbitcompany\admingui\MetricsLite$2.class
 com\rabbitcompany\admingui\utils\spawners\materials\Material_Version_12.class
 com\rabbitcompany\admingui\XMaterial$MinecraftVersion.class
+com\rabbitcompany\admingui\listeners\PlayerChatListener.class
 com\rabbitcompany\admingui\utils\spawners\materials\Material_Version_13.class
 com\rabbitcompany\admingui\listeners\InventoryClickListener.class
 com\rabbitcompany\admingui\XMaterial.class

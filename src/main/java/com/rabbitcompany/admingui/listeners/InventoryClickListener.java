@@ -86,7 +86,7 @@ public class InventoryClickListener implements Listener {
                     if (e.getCurrentItem() != null) {
                         adminUI.clicked_spawner(p, e.getSlot(), e.getCurrentItem(), e.getInventory(), adminUI.target_player.get(p));
                     }
-                }else if(title.equals(Message.getMessage("inventory_money").replace("{player}", adminUI.target_player.get(p).getName()))){
+                } else if(title.equals(Message.getMessage("inventory_money").replace("{player}", adminUI.target_player.get(p).getName()))){
 
                     if (e.getCurrentItem() != null) {
                         adminUI.clicked_money(p, e.getSlot(), e.getCurrentItem(), e.getInventory(), adminUI.target_player.get(p));

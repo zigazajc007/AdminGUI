@@ -6,19 +6,22 @@ import com.rabbitcompany.admingui.utils.potions.Version_12;
 import com.rabbitcompany.admingui.utils.potions.Version_14;
 import com.rabbitcompany.admingui.utils.spawners.materials.*;
 import com.rabbitcompany.admingui.utils.spawners.messages.*;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 public class AdminUI {
 
@@ -1302,7 +1305,7 @@ public class AdminUI {
                 if(p.getName().equals(target_player.getName())){
                     p.openInventory(GUI_Player(p));
                 }else{
-                    p.openInventory(GUI_Players_Settings(p, target_player));
+                    p.openInventory(GUI_Actions(p, target_player));
                 }
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("spawner_bat"))){
                 Entity.spawn(target_player.getLocation(), EntityType.BAT);
@@ -1425,10 +1428,76 @@ public class AdminUI {
                 p.openInventory(GUI_Players_Settings(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_give"))){
 
+                String amount = "100";
+
+                if(NumberUtils.isNumber(amount)){
+                    if(AdminGUI.vault){
+                        EconomyResponse r = AdminGUI.getEconomy().depositPlayer(target_player, Double.parseDouble(amount));
+                        if(r.transactionSuccess()) {
+                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_give").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
+                        }else{
+                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()));
+                        }
+                        p.closeInventory();
+                    }else{
+                        p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
+                        p.closeInventory();
+                    }
+                }else{
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_number").replace("{number}", amount));
+                    p.closeInventory();
+                }
+
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_set"))){
+
+                String amount = "500";
+
+                if(NumberUtils.isNumber(amount)){
+                    if(AdminGUI.vault){
+                        double balance = AdminGUI.getEconomy().getBalance(target_player);
+                        AdminGUI.getEconomy().withdrawPlayer(target_player, balance);
+                        EconomyResponse r = AdminGUI.getEconomy().depositPlayer(target_player, Double.parseDouble(amount));
+                        if(r.transactionSuccess()) {
+                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_set").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
+                        }else{
+                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()));
+                        }
+                        p.closeInventory();
+                    }else{
+                        p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
+                        p.closeInventory();
+                    }
+                }else{
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_number").replace("{number}", amount));
+                    p.closeInventory();
+                }
 
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_take"))){
 
+                String amount = "50";
+
+                if(NumberUtils.isNumber(amount)){
+                    if(AdminGUI.vault){
+                        if(AdminGUI.getEconomy().getBalance(target_player) >= Double.parseDouble(amount)){
+                            EconomyResponse r = AdminGUI.getEconomy().withdrawPlayer(target_player, Double.parseDouble(amount));
+                            if(r.transactionSuccess()) {
+                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_take").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
+                            }else{
+                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()));
+                            }
+                            p.closeInventory();
+                        }else{
+                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_take_error"));
+                            p.closeInventory();
+                        }
+                    }else{
+                        p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
+                        p.closeInventory();
+                    }
+                }else{
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_number").replace("{number}", amount));
+                    p.closeInventory();
+                }
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
