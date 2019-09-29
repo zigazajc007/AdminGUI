@@ -545,6 +545,56 @@ public class AdminUI {
         return inv_money;
     }
 
+    public Inventory GUI_Money_Amount(Player p, Player target, int option){
+
+        String inventory_money_amount_name;
+
+        switch (option){
+            case 1:
+                inventory_money_amount_name = Message.getMessage("inventory_money_give").replace("{player}", target.getName());
+                break;
+            case 3:
+                inventory_money_amount_name = Message.getMessage("inventory_money_take").replace("{player}", target.getName());
+                break;
+            default:
+                inventory_money_amount_name = Message.getMessage("inventory_money_set").replace("{player}", target.getName());
+        }
+        target_player.put(p, target);
+
+        Inventory inv_money_amount = Bukkit.createInventory(null, 36, inventory_money_amount_name);
+
+        if(target.isOnline()){
+
+            for(int i = 1; i < 36; i++){
+                Item.create(inv_money_amount, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
+            }
+
+            for (int i = 1; i <= 10; i++){
+                Item.create(inv_money_amount, "PAPER", 1, i, "&a&l" + AdminGUI.getEconomy().format(i*100));
+            }
+
+            for (int i = 11, j = 1; i < 20; i++, j++){
+                Item.create(inv_money_amount, "PAPER", 1, i, "&a&l" + AdminGUI.getEconomy().format(j * 1500));
+            }
+
+            for (int i = 20, j = 1; i <= 25; i++, j++){
+                Item.create(inv_money_amount, "PAPER", 1, i, "&a&l" + AdminGUI.getEconomy().format(j * 15000));
+            }
+
+            for (int i = 26, j = 1; i < 36; i++, j++){
+                Item.create(inv_money_amount, "PAPER", 1, i, "&a&l" + AdminGUI.getEconomy().format(j * 100000));
+            }
+
+        }else{
+            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
+            p.closeInventory();
+        }
+
+        Item.create(inv_money_amount, "REDSTONE_BLOCK", 1, 36, Message.getMessage("money_back"));
+
+        return inv_money_amount;
+    }
+
     public Inventory GUI_Inventory(Player p, Player target) {
 
         String inventory_inventory_name = Message.getMessage("inventory_inventory").replace("{player}", target.getName());
@@ -1427,77 +1477,88 @@ public class AdminUI {
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_back"))){
                 p.openInventory(GUI_Players_Settings(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_give"))){
-
-                String amount = "100";
-
-                if(NumberUtils.isNumber(amount)){
-                    if(AdminGUI.vault){
-                        EconomyResponse r = AdminGUI.getEconomy().depositPlayer(target_player, Double.parseDouble(amount));
-                        if(r.transactionSuccess()) {
-                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_give").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
-                        }else{
-                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()));
-                        }
-                        p.closeInventory();
-                    }else{
-                        p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
-                        p.closeInventory();
-                    }
+                if(AdminGUI.vault){
+                    p.openInventory(GUI_Money_Amount(p, target_player, 1));
                 }else{
-                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_number").replace("{number}", amount));
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
                     p.closeInventory();
                 }
-
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_set"))){
-
-                String amount = "500";
-
-                if(NumberUtils.isNumber(amount)){
-                    if(AdminGUI.vault){
-                        double balance = AdminGUI.getEconomy().getBalance(target_player);
-                        AdminGUI.getEconomy().withdrawPlayer(target_player, balance);
-                        EconomyResponse r = AdminGUI.getEconomy().depositPlayer(target_player, Double.parseDouble(amount));
-                        if(r.transactionSuccess()) {
-                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_set").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
-                        }else{
-                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()));
-                        }
-                        p.closeInventory();
-                    }else{
-                        p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
-                        p.closeInventory();
-                    }
+                if(AdminGUI.vault){
+                    p.openInventory(GUI_Money_Amount(p, target_player, 2));
                 }else{
-                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_number").replace("{number}", amount));
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
                     p.closeInventory();
                 }
-
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_take"))){
-
-                String amount = "50";
-
-                if(NumberUtils.isNumber(amount)){
-                    if(AdminGUI.vault){
-                        if(AdminGUI.getEconomy().getBalance(target_player) >= Double.parseDouble(amount)){
-                            EconomyResponse r = AdminGUI.getEconomy().withdrawPlayer(target_player, Double.parseDouble(amount));
-                            if(r.transactionSuccess()) {
-                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_take").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
-                            }else{
-                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()));
-                            }
-                            p.closeInventory();
-                        }else{
-                            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_take_error"));
-                            p.closeInventory();
-                        }
-                    }else{
-                        p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
-                        p.closeInventory();
-                    }
+                if(AdminGUI.vault){
+                    p.openInventory(GUI_Money_Amount(p, target_player, 3));
                 }else{
-                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_number").replace("{number}", amount));
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
                     p.closeInventory();
                 }
+            }
+        }else{
+            p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
+            p.closeInventory();
+        }
+    }
+
+    public void clicked_money_amount(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player, int option){
+        if(target_player.isOnline()){
+            if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_amount_back"))){
+                p.openInventory(GUI_Money(p, target_player));
+            }else {
+                    if (clicked.hasItemMeta()) {
+                        if (clicked.getItemMeta().hasDisplayName()) {
+                            String amount = stripNonDigits(clicked.getItemMeta().getDisplayName());
+                            if (NumberUtils.isNumber(amount)) {
+                                if (AdminGUI.vault) {
+                                    switch (option) {
+                                        case 1:
+                                            EconomyResponse r = AdminGUI.getEconomy().depositPlayer(target_player, Double.parseDouble(amount));
+                                            if (r.transactionSuccess()) {
+                                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_give").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
+                                            } else {
+                                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()));
+                                            }
+                                            p.closeInventory();
+                                            break;
+                                        case 3:
+                                            if(AdminGUI.getEconomy().getBalance(target_player) >= Double.parseDouble(amount)){
+                                                EconomyResponse s = AdminGUI.getEconomy().withdrawPlayer(target_player, Double.parseDouble(amount));
+                                                if(s.transactionSuccess()) {
+                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_take").replace("{amount}", AdminGUI.getEconomy().format(s.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(s.balance)));
+                                                }else{
+                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(s.amount)).replace("{player}", target_player.getName()));
+                                                }
+                                                p.closeInventory();
+                                            }else{
+                                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_take_error"));
+                                                p.closeInventory();
+                                            }
+                                            break;
+                                        default:
+                                            double balance = AdminGUI.getEconomy().getBalance(target_player);
+                                            AdminGUI.getEconomy().withdrawPlayer(target_player, balance);
+                                            EconomyResponse t = AdminGUI.getEconomy().depositPlayer(target_player, Double.parseDouble(amount));
+                                            if(t.transactionSuccess()) {
+                                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_set").replace("{amount}", AdminGUI.getEconomy().format(t.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(t.balance)));
+                                            }else{
+                                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(t.amount)).replace("{player}", target_player.getName()));
+                                            }
+                                            p.closeInventory();
+                                    }
+                                } else {
+                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vault_required"));
+                                    p.closeInventory();
+                                }
+                            } else {
+                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("is_not_a_number").replace("{number}", amount));
+                                p.closeInventory();
+                            }
+                        }
+                    }
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
@@ -1529,5 +1590,16 @@ public class AdminUI {
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
             p.closeInventory();
         }
+    }
+
+    public static String stripNonDigits(final CharSequence input){
+        final StringBuilder sb = new StringBuilder(input.length());
+        for(int i = 0; i < input.length(); i++){
+            final char c = input.charAt(i);
+            if(c > 47 && c < 58){
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }
