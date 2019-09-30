@@ -257,6 +257,7 @@ money_amount_back: "&c&lBack"
 #                    Inventory GUI
 #----------------------------------------------------------
 inventory_refresh: "&a&lRefresh"
+inventory_clear: "&b&lClear"
 inventory_back: "&c&lBack"
 #----------------------------------------------------------
 #                       Messages

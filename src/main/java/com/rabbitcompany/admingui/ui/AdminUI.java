@@ -467,7 +467,7 @@ public class AdminUI {
                 Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
             }
 
-        }else if(Bukkit.getVersion().contains("1.12") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.10")){
+        }else if(Bukkit.getVersion().contains("1.12") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.9")){
 
             for(Version_12 potion : Version_12.values()){
                 Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
@@ -510,6 +510,10 @@ public class AdminUI {
         }else if(Bukkit.getVersion().contains("1.10")){
             for(Material_Version_10 material : Material_Version_10.values()){
                 Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_10.values()[material.ordinal()].name()));
+            }
+        }else if(Bukkit.getVersion().contains("1.9")){
+            for(Material_Version_9 material : Material_Version_9.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_9.values()[material.ordinal()].name()));
             }
         }
 
@@ -609,25 +613,15 @@ public class AdminUI {
 
             for(int i = 0; i < items.length; i++){
                 if(items[i] != null){
-                    String material = items[i].getType().toString();
-                    if(items[i].getItemMeta().hasDisplayName()){
-                        Item.create(inv_inventory, material, items[i].getAmount(), i+1, items[i].getItemMeta().getDisplayName());
-                    }else{
-                        Item.create(inv_inventory, material, items[i].getAmount(), i+1, WordUtils.capitalizeFully(material.replace("_", " ")));
-                    }
+                    inv_inventory.setItem(i, items[i]);
                 }else{
                     inv_inventory.setItem(i, null);
                 }
             }
 
-            for (int i = 0, j = 37; i < armor.length; i++, j++){
+            for (int i = 0, j = 36; i < armor.length; i++, j++){
                 if(armor[i] != null){
-                    String material = armor[i].getType().toString();
-                    if(armor[i].getItemMeta().hasDisplayName()){
-                        Item.create(inv_inventory, material, armor[i].getAmount(), j, armor[i].getItemMeta().getDisplayName());
-                    }else {
-                        Item.create(inv_inventory, material, armor[i].getAmount(), j, WordUtils.capitalizeFully(material.replace("_", " ")));
-                    }
+                    inv_inventory.setItem(j, armor[i]);
                 }else{
                     inv_inventory.setItem(j, null);
                 }
@@ -642,6 +636,8 @@ public class AdminUI {
         }
 
         Item.create(inv_inventory, "GREEN_TERRACOTTA", 1, 46, Message.getMessage("inventory_refresh"));
+
+        Item.create(inv_inventory, "BLUE_TERRACOTTA", 1, 50, Message.getMessage("inventory_clear"));
 
         Item.create(inv_inventory, "REDSTONE_BLOCK", 1, 54, Message.getMessage("inventory_back"));
 
@@ -1571,6 +1567,9 @@ public class AdminUI {
         if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("inventory_back"))){
                 p.openInventory(GUI_Actions(p, target_player));
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("inventory_clear"))){
+                target_player.getInventory().clear();
+                p.openInventory(GUI_Inventory(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("inventory_refresh"))){
                 p.openInventory(GUI_Inventory(p, target_player));
             }else{
