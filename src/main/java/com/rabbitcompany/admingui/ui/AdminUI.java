@@ -6,17 +6,13 @@ import com.rabbitcompany.admingui.utils.potions.Version_12;
 import com.rabbitcompany.admingui.utils.potions.Version_14;
 import com.rabbitcompany.admingui.utils.spawners.materials.*;
 import com.rabbitcompany.admingui.utils.spawners.messages.*;
+import de.myzelyam.api.vanish.VanishAPI;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -41,6 +37,9 @@ public class AdminUI {
     //Potions
     private HashMap<Player, Integer> duration = new HashMap<Player, Integer>();
     private HashMap<Player, Integer> level = new HashMap<Player, Integer>();
+
+    //Vanish
+    private HashMap<Player, Boolean> vanish = new HashMap<Player, Boolean>();
 
     //Maintenance mode
     public static boolean maintenance_mode = false;
@@ -72,73 +71,103 @@ public class AdminUI {
 
         String inventory_player_name = Message.getMessage("inventory_player").replace("{player}", p.getName());
 
-        Inventory inv_player = Bukkit.createInventory(null, 9, inventory_player_name);
+        Inventory inv_player = Bukkit.createInventory(null, 36, inventory_player_name);
 
-        for(int i = 1; i < 9; i++){
+        for(int i = 1; i < 36; i++){
             Item.create(inv_player, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
-        if(p.hasPermission("admingui.heal")) {
-            Item.create(inv_player, "GOLDEN_APPLE", 1, 1, Message.getMessage("player_heal"));
+        if(p.hasPermission("admingui.info")) {
+            if(AdminGUI.vault){
+                Item.createPlayerHead(inv_player, p.getName(), 1, 5, Message.getMessage("player_info").replace("{player}", p.getName()), Message.chat("&eHeal: " + Math.round(p.getHealth())), Message.chat("&7Feed: " + Math.round(p.getFoodLevel())), Message.chat("&2Money: " + AdminGUI.getEconomy().format(AdminGUI.getEconomy().getBalance(p.getName()))) ,Message.chat("&aGamemode: " + p.getGameMode().toString()), Message.chat("&5IP: " + p.getAddress()));
+            }else{
+                Item.createPlayerHead(inv_player, p.getName(), 1, 5, Message.getMessage("player_info").replace("{player}", p.getName()), Message.chat("&eHeal: " + Math.round(p.getHealth())), Message.chat("&7Feed: " + Math.round(p.getFoodLevel())), Message.chat("&aGamemode: " + p.getGameMode().toString()), Message.chat("&5IP: " + p.getAddress()));
+            }
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 1,  Message.getMessage("permission"));
+            Item.createPlayerHead(inv_player, p.getName(), 1, 5, Message.getMessage("player_info").replace("{player}", p.getName()));
+        }
+
+        if(p.hasPermission("admingui.heal")) {
+            Item.create(inv_player, "GOLDEN_APPLE", 1, 11, Message.getMessage("player_heal"));
+        }else{
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 11,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.feed")) {
-            Item.create(inv_player, "COOKED_BEEF", 1, 2, Message.getMessage("player_feed"));
+            Item.create(inv_player, "COOKED_BEEF", 1, 13, Message.getMessage("player_feed"));
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 2,  Message.getMessage("permission"));
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 13,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.gamemode")) {
             if (p.getPlayer().getGameMode() == GameMode.SURVIVAL) {
-                Item.create(inv_player, "DIRT", 1, 3, Message.getMessage("player_survival"));
+                Item.create(inv_player, "DIRT", 1, 15, Message.getMessage("player_survival"));
             } else if (p.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-                Item.create(inv_player, "GRASS_BLOCK", 1, 3, Message.getMessage("player_adventure"));
+                Item.create(inv_player, "GRASS_BLOCK", 1, 15, Message.getMessage("player_adventure"));
             } else if (p.getPlayer().getGameMode() == GameMode.CREATIVE) {
-                Item.create(inv_player, "BRICKS", 1, 3, Message.getMessage("player_creative"));
+                Item.create(inv_player, "BRICKS", 1, 15, Message.getMessage("player_creative"));
             } else if (p.getPlayer().getGameMode() == GameMode.SPECTATOR) {
-                Item.create(inv_player, "SPLASH_POTION", 1, 3, Message.getMessage("player_spectator"));
+                Item.create(inv_player, "SPLASH_POTION", 1, 15, Message.getMessage("player_spectator"));
             }
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 3,  Message.getMessage("permission"));
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 15,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.god")) {
             if (p.isInvulnerable()) {
-                Item.create(inv_player, "RED_TERRACOTTA", 1, 4, Message.getMessage("player_god_disabled"));
+                Item.create(inv_player, "RED_TERRACOTTA", 1, 17, Message.getMessage("player_god_disabled"));
             } else {
-                Item.create(inv_player, "LIME_TERRACOTTA", 1, 4, Message.getMessage("player_god_enabled"));
+                Item.create(inv_player, "LIME_TERRACOTTA", 1, 17, Message.getMessage("player_god_enabled"));
             }
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 4,  Message.getMessage("permission"));
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 17,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.potions")) {
-            Item.create(inv_player, "POTION", 1, 5, Message.getMessage("player_potions"));
+            Item.create(inv_player, "POTION", 1, 19, Message.getMessage("player_potions"));
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 5,  Message.getMessage("permission"));
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 19,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.spawner")) {
-            Item.create(inv_player, "SPAWNER", 1, 6, Message.getMessage("player_spawner"));
+            Item.create(inv_player, "SPAWNER", 1, 21, Message.getMessage("player_spawner"));
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 13, 6,  Message.getMessage("permission"));
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 21,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.kill")) {
-            Item.create(inv_player, "DIAMOND_SWORD", 1, 7, Message.getMessage("player_kill"));
+            Item.create(inv_player, "DIAMOND_SWORD", 1, 23, Message.getMessage("player_kill"));
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 7,  Message.getMessage("permission"));
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 23,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.burn")) {
-            Item.create(inv_player, "FLINT_AND_STEEL", 1, 8, Message.getMessage("player_burn"));
+            Item.create(inv_player, "FLINT_AND_STEEL", 1, 25, Message.getMessage("player_burn"));
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 8,  Message.getMessage("permission"));
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 25,  Message.getMessage("permission"));
         }
 
-        Item.create(inv_player, "REDSTONE_BLOCK", 1, 9, Message.getMessage("player_back"));
+        if(p.hasPermission("admingui.money")) {
+            Item.create(inv_player, "PAPER", 1, 27, Message.getMessage("player_money"));
+        }else{
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 27,  Message.getMessage("permission"));
+        }
+
+        if (p.hasPermission("admingui.vanish")) {
+            if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
+                if (VanishAPI.isInvisible(p)) {
+                    Item.create(inv_player, "FEATHER", 1, 29, Message.getMessage("player_vanish_disabled"));
+                } else {
+                    Item.create(inv_player, "FEATHER", 1, 29, Message.getMessage("player_vanish_enabled"));
+                }
+            } else {
+                Item.create(inv_player, "FEATHER", 1, 29, Message.getMessage("player_vanish_enabled"));
+            }
+        }else{
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 29, Message.getMessage("permission"));
+        }
+
+        Item.create(inv_player, "REDSTONE_BLOCK", 1, 36, Message.getMessage("player_back"));
 
         return inv_player;
     }
@@ -369,6 +398,20 @@ public class AdminUI {
             Item.create(inv_actions, "FLINT_AND_STEEL", 1, 31, Message.getMessage("actions_burn_player"));
         }else{
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 31,  Message.getMessage("permission"));
+        }
+
+        if (p.hasPermission("admingui.vanish.other")) {
+            if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
+                if (VanishAPI.isInvisible(target)) {
+                    Item.create(inv_actions, "FEATHER", 1, 33, Message.getMessage("actions_vanish_disabled"));
+                } else {
+                    Item.create(inv_actions, "FEATHER", 1, 33, Message.getMessage("actions_vanish_enabled"));
+                }
+            } else {
+                Item.create(inv_actions, "FEATHER", 1, 33, Message.getMessage("actions_vanish_enabled"));
+            }
+        }else{
+            Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 33, Message.getMessage("permission"));
         }
 
         Item.create(inv_actions, "REDSTONE_BLOCK", 1, 36, Message.getMessage("actions_back"));
@@ -682,6 +725,8 @@ public class AdminUI {
 
         if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_back"))) {
             p.openInventory(GUI_Main(p));
+        }else if(InventoryGUI.getClickedItem(clicked,Message.getMessage("player_info").replace("{player}", p.getName()))){
+            p.openInventory(GUI_Player(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_heal"))){
             p.setHealth(20);
             p.setFireTicks(0);
@@ -721,6 +766,24 @@ public class AdminUI {
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_burn"))){
             p.setFireTicks(500);
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_burn"));
+        }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_money"))){
+            p.openInventory(GUI_Money(p, p));
+        }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_vanish_enabled"))){
+            if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
+                VanishAPI.hidePlayer(p);
+                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_hide"));
+            }else{
+                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vanish_required"));
+            }
+            p.closeInventory();
+        }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_vanish_disabled"))){
+            if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
+                VanishAPI.showPlayer(p);
+                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_visible"));
+            }else{
+                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vanish_required"));
+            }
+            p.closeInventory();
         }
     }
 
@@ -859,6 +922,24 @@ public class AdminUI {
                 p.openInventory(GUI_Spawner(p, target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_inventory"))){
                 p.openInventory(GUI_Inventory(p, target_player));
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_vanish_enabled"))){
+                if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
+                    VanishAPI.hidePlayer(target_player);
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_hide").replace("{player}", target_player.getName()));
+                    target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_hide"));
+                }else{
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vanish_required"));
+                }
+                p.closeInventory();
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_vanish_disabled"))){
+                if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
+                    VanishAPI.showPlayer(target_player);
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_visible").replace("{player}", target_player.getName()));
+                    target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_visible"));
+                }else{
+                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vanish_required"));
+                }
+                p.closeInventory();
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
@@ -1471,7 +1552,11 @@ public class AdminUI {
     public void clicked_money(Player p, int slot, ItemStack clicked, Inventory inv, Player target_player){
         if(target_player.isOnline()){
             if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_back"))){
-                p.openInventory(GUI_Players_Settings(p, target_player));
+                if(p.getName().equals(target_player.getName())){
+                    p.openInventory(GUI_Player(p));
+                }else{
+                    p.openInventory(GUI_Players_Settings(p, target_player));
+                }
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("money_give"))){
                 if(AdminGUI.vault){
                     p.openInventory(GUI_Money_Amount(p, target_player, 1));
@@ -1514,7 +1599,12 @@ public class AdminUI {
                                         case 1:
                                             EconomyResponse r = AdminGUI.getEconomy().depositPlayer(target_player, Double.parseDouble(amount));
                                             if (r.transactionSuccess()) {
-                                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_give").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
+                                                if(p.getName().equals(target_player.getName())){
+                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_give").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
+                                                }else{
+                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_give").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
+                                                    target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_give").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", p.getName()).replace("{balance}", AdminGUI.getEconomy().format(r.balance)));
+                                                }
                                             } else {
                                                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(r.amount)).replace("{player}", target_player.getName()));
                                             }
@@ -1524,13 +1614,22 @@ public class AdminUI {
                                             if(AdminGUI.getEconomy().getBalance(target_player) >= Double.parseDouble(amount)){
                                                 EconomyResponse s = AdminGUI.getEconomy().withdrawPlayer(target_player, Double.parseDouble(amount));
                                                 if(s.transactionSuccess()) {
-                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_take").replace("{amount}", AdminGUI.getEconomy().format(s.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(s.balance)));
+                                                    if(p.getName().equals(target_player.getName())){
+                                                        p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_take").replace("{amount}", AdminGUI.getEconomy().format(s.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(s.balance)));
+                                                    }else{
+                                                        p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_take").replace("{amount}", AdminGUI.getEconomy().format(s.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(s.balance)));
+                                                        target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_take").replace("{amount}", AdminGUI.getEconomy().format(s.amount)).replace("{player}", p.getName()).replace("{balance}", AdminGUI.getEconomy().format(s.balance)));
+                                                    }
                                                 }else{
                                                     p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(s.amount)).replace("{player}", target_player.getName()));
                                                 }
                                                 p.closeInventory();
                                             }else{
-                                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_take_error"));
+                                                if(p.getName().equals(target_player.getName())){
+                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_take_error"));
+                                                }else{
+                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_take_error"));
+                                                }
                                                 p.closeInventory();
                                             }
                                             break;
@@ -1539,7 +1638,12 @@ public class AdminUI {
                                             AdminGUI.getEconomy().withdrawPlayer(target_player, balance);
                                             EconomyResponse t = AdminGUI.getEconomy().depositPlayer(target_player, Double.parseDouble(amount));
                                             if(t.transactionSuccess()) {
-                                                p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_set").replace("{amount}", AdminGUI.getEconomy().format(t.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(t.balance)));
+                                                if(p.getName().equals(target_player.getName())){
+                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_set").replace("{amount}", AdminGUI.getEconomy().format(t.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(t.balance)));
+                                                }else{
+                                                    p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_set").replace("{amount}", AdminGUI.getEconomy().format(t.amount)).replace("{player}", target_player.getName()).replace("{balance}", AdminGUI.getEconomy().format(t.balance)));
+                                                    target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_set").replace("{amount}", AdminGUI.getEconomy().format(t.amount)).replace("{player}", p.getName()).replace("{balance}", AdminGUI.getEconomy().format(t.balance)));
+                                                }
                                             }else{
                                                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_transaction_error").replace("{amount}", AdminGUI.getEconomy().format(t.amount)).replace("{player}", target_player.getName()));
                                             }

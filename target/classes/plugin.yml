@@ -1,10 +1,10 @@
 name: Admin-GUI
-version: 1.3.7
+version: 1.3.8
 main: com.rabbitcompany.admingui.AdminGUI
 api-version: 1.13
 authors: [RabbitCompany]
 description: Easy manage your Minecraft server with Admin GUI
-softdepend: [Vault]
+softdepend: [Vault, SuperVanish, PremiumVanish]
 commands:
   admin:
     usage: /<command>
