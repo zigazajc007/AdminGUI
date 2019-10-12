@@ -1,4 +1,5 @@
 com\rabbitcompany\admingui\utils\Entity.class
+com\rabbitcompany\admingui\utils\spawners\messages\Message_Version_8.class
 com\rabbitcompany\admingui\utils\Updater.class
 com\rabbitcompany\admingui\AdminGUI.class
 com\rabbitcompany\admingui\utils\InventoryGUI.class
@@ -7,6 +8,7 @@ com\rabbitcompany\admingui\utils\spawners\messages\Message_Version_13.class
 com\rabbitcompany\admingui\utils\TargetPlayer.class
 com\rabbitcompany\admingui\commands\Admin.class
 com\rabbitcompany\admingui\MetricsLite.class
+com\rabbitcompany\admingui\utils\spawners\materials\Material_Version_8.class
 com\rabbitcompany\admingui\utils\spawners\messages\Message_Version_14.class
 com\rabbitcompany\admingui\listeners\PlayerJoinListener.class
 com\rabbitcompany\admingui\utils\MaterialGUI.class
@@ -27,6 +29,7 @@ com\rabbitcompany\admingui\utils\Message.class
 com\rabbitcompany\admingui\listeners\PlayerLoginListener.class
 com\rabbitcompany\admingui\MetricsLite$2.class
 com\rabbitcompany\admingui\utils\spawners\materials\Material_Version_12.class
+com\rabbitcompany\admingui\utils\potions\Version_8.class
 com\rabbitcompany\admingui\XMaterial$MinecraftVersion.class
 com\rabbitcompany\admingui\utils\spawners\materials\Material_Version_13.class
 com\rabbitcompany\admingui\listeners\InventoryClickListener.class

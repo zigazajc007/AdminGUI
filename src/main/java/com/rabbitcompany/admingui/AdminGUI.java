@@ -42,7 +42,9 @@ public class AdminGUI extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Message.chat("&7[&cAdmin GUI&7] &aPlugin is enabled!"));
 
         //bStats
-        MetricsLite metricsLite = new MetricsLite(this);
+        if(!Bukkit.getVersion().contains("1.8")){
+            MetricsLite metricsLite = new MetricsLite(this);
+        }
 
         //Updater
         updater = new SpigotUpdater(this, 71157);

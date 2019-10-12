@@ -10,7 +10,10 @@ public class Message {
     }
 
     public static String getMessage(String config){
-        return chat(AdminGUI.getInstance().getLang().getString(config));
+        if(AdminGUI.getInstance().getLang().getString(config) != null){
+            return chat(AdminGUI.getInstance().getLang().getString(config));
+        }else{
+            return chat("&cValue: " + config + " is missing in language.yml file! Please add it or delete language.yml file.");
+        }
     }
-
 }

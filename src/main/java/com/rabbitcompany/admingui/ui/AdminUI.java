@@ -4,6 +4,7 @@ import com.rabbitcompany.admingui.AdminGUI;
 import com.rabbitcompany.admingui.utils.*;
 import com.rabbitcompany.admingui.utils.potions.Version_12;
 import com.rabbitcompany.admingui.utils.potions.Version_14;
+import com.rabbitcompany.admingui.utils.potions.Version_8;
 import com.rabbitcompany.admingui.utils.spawners.materials.*;
 import com.rabbitcompany.admingui.utils.spawners.messages.*;
 import de.myzelyam.api.vanish.VanishAPI;
@@ -107,17 +108,25 @@ public class AdminUI {
             } else if (p.getPlayer().getGameMode() == GameMode.CREATIVE) {
                 Item.create(inv_player, "BRICKS", 1, 15, Message.getMessage("player_creative"));
             } else if (p.getPlayer().getGameMode() == GameMode.SPECTATOR) {
-                Item.create(inv_player, "SPLASH_POTION", 1, 15, Message.getMessage("player_spectator"));
+                if(Bukkit.getVersion().contains("1.8")){
+                    Item.create(inv_player, "POTION", 1, 15, Message.getMessage("player_spectator"));
+                }else{
+                    Item.create(inv_player, "SPLASH_POTION", 1, 15, Message.getMessage("player_spectator"));
+                }
             }
         }else{
             Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 15,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.god")) {
-            if (p.isInvulnerable()) {
-                Item.create(inv_player, "RED_TERRACOTTA", 1, 17, Message.getMessage("player_god_disabled"));
-            } else {
-                Item.create(inv_player, "LIME_TERRACOTTA", 1, 17, Message.getMessage("player_god_enabled"));
+            if(!Bukkit.getVersion().contains("1.8")) {
+                if (p.isInvulnerable()) {
+                    Item.create(inv_player, "RED_TERRACOTTA", 1, 17, Message.getMessage("player_god_disabled"));
+                } else {
+                    Item.create(inv_player, "LIME_TERRACOTTA", 1, 17, Message.getMessage("player_god_enabled"));
+                }
+            }else{
+                Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 17,  " ");
             }
         }else{
             Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 17,  Message.getMessage("permission"));
@@ -342,17 +351,25 @@ public class AdminUI {
             } else if (target.getGameMode() == GameMode.CREATIVE) {
                 Item.create(inv_actions, "BRICKS", 1, 15, Message.getMessage("actions_creative"));
             } else if (target.getGameMode() == GameMode.SPECTATOR) {
-                Item.create(inv_actions, "SPLASH_POTION", 1, 15, Message.getMessage("actions_spectator"));
+                if(Bukkit.getVersion().contains("1.8")){
+                    Item.create(inv_actions, "POTION", 1, 15, Message.getMessage("actions_spectator"));
+                }else{
+                    Item.create(inv_actions, "SPLASH_POTION", 1, 15, Message.getMessage("actions_spectator"));
+                }
             }
         }else{
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 15,  Message.getMessage("permission"));
         }
 
         if(p.hasPermission("admingui.god.other")) {
-            if (target.isInvulnerable()) {
-                Item.create(inv_actions, "RED_TERRACOTTA", 1, 17, Message.getMessage("actions_god_disabled"));
-            } else {
-                Item.create(inv_actions, "LIME_TERRACOTTA", 1, 17, Message.getMessage("actions_god_enabled"));
+            if(!Bukkit.getVersion().contains("1.8")) {
+                if (target.isInvulnerable()) {
+                    Item.create(inv_actions, "RED_TERRACOTTA", 1, 17, Message.getMessage("actions_god_disabled"));
+                } else {
+                    Item.create(inv_actions, "LIME_TERRACOTTA", 1, 17, Message.getMessage("actions_god_enabled"));
+                }
+            }else{
+                Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 17,  " ");
             }
         }else{
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 17,  Message.getMessage("permission"));
@@ -383,7 +400,11 @@ public class AdminUI {
         }
 
         if(p.hasPermission("admingui.teleport.other")) {
-            Item.create(inv_actions, "END_CRYSTAL", 1, 27, Message.getMessage("actions_teleport_player_to_you"));
+            if(Bukkit.getVersion().contains("1.8")){
+                Item.create(inv_actions, "ENDER_PEARL", 1, 27, Message.getMessage("actions_teleport_player_to_you"));
+            }else{
+                Item.create(inv_actions, "END_CRYSTAL", 1, 27, Message.getMessage("actions_teleport_player_to_you"));
+            }
         }else{
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 27,  Message.getMessage("permission"));
         }
@@ -505,17 +526,17 @@ public class AdminUI {
         }
 
         if (Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.13")) {
-
             for(Version_14 potion : Version_14.values()){
                 Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
             }
-
         }else if(Bukkit.getVersion().contains("1.12") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.9")){
-
             for(Version_12 potion : Version_12.values()){
                 Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
             }
-
+        }else if(Bukkit.getVersion().contains("1.8")){
+            for(Version_8 potion : Version_8.values()){
+                Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
+            }
         }
 
         Item.create(inv_potions, "CLOCK", duration.getOrDefault(p,1), 31, Message.getMessage("potions_time"));
@@ -557,6 +578,10 @@ public class AdminUI {
         }else if(Bukkit.getVersion().contains("1.9")){
             for(Material_Version_9 material : Material_Version_9.values()){
                 Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_9.values()[material.ordinal()].name()));
+            }
+        }else if(Bukkit.getVersion().contains("1.8")){
+            for(Material_Version_8 material : Material_Version_8.values()){
+                Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_8.values()[material.ordinal()].name()));
             }
         }
 
