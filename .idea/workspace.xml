@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="68fba916-2c46-44c3-b849-1655c59b9b44" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/utils/potions/Version_8.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/utils/spawners/materials/Material_Version_8.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/utils/spawners/messages/Message_Version_8.java" afterDir="false" />
+    <list default="true" id="68fba916-2c46-44c3-b849-1655c59b9b44" name="Default Changelist" comment="Added support for 1.8 version and now plugin remind the player when config is not written correctly.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/utils/Colors.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/utils/Fireworks.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/AdminGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/AdminGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/ui/AdminUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/ui/AdminUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/utils/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/utils/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/AdminGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/AdminGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/language.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/ui/AdminUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/ui/AdminUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/language.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/language.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
@@ -152,7 +151,8 @@
       <workItem from="1570123438787" duration="603000" />
       <workItem from="1570198216609" duration="4057000" />
       <workItem from="1570220436670" duration="806000" />
-      <workItem from="1570908535112" duration="4033000" />
+      <workItem from="1570908535112" duration="4750000" />
+      <workItem from="1570968365721" duration="6517000" />
     </task>
     <task id="LOCAL-00001" summary="Performance improvement">
       <created>1569016445205</created>
@@ -273,7 +273,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569954390115</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Added support for 1.8 version and now plugin remind the player when config is not written correctly.">
+      <created>1570913206606</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1570913206606</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,6 +314,7 @@
     <MESSAGE value="Now you can give, set or take money from players with Admin GUI." />
     <MESSAGE value="Added support for 1.9 and fixed inventory edit." />
     <MESSAGE value="Added support for Super Vanish and Premium Vanish plugins, Redesigned Player GUI and now player can set,take or give money to himself." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added support for Super Vanish and Premium Vanish plugins, Redesigned Player GUI and now player can set,take or give money to himself." />
+    <MESSAGE value="Added support for 1.8 version and now plugin remind the player when config is not written correctly." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added support for 1.8 version and now plugin remind the player when config is not written correctly." />
   </component>
 </project>

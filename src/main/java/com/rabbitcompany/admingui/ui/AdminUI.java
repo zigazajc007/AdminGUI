@@ -12,9 +12,11 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -156,24 +158,40 @@ public class AdminUI {
             Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 25,  Message.getMessage("permission"));
         }
 
-        if(p.hasPermission("admingui.money")) {
-            Item.create(inv_player, "PAPER", 1, 27, Message.getMessage("player_money"));
+        if(p.hasPermission("admingui.lightning")) {
+            if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14")){
+                Item.create(inv_player, "TRIDENT", 1, 27, Message.getMessage("player_lightning"));
+            }else{
+                Item.create(inv_player, "STICK", 1, 27, Message.getMessage("player_lightning"));
+            }
         }else{
             Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 27,  Message.getMessage("permission"));
+        }
+
+        if(p.hasPermission("admingui.firework")) {
+            Item.create(inv_player, "FIREWORK_ROCKET", 1, 29, Message.getMessage("player_firework"));
+        }else{
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 29,  Message.getMessage("permission"));
+        }
+
+        if(p.hasPermission("admingui.money")) {
+            Item.create(inv_player, "PAPER", 1, 31, Message.getMessage("player_money"));
+        }else{
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 31,  Message.getMessage("permission"));
         }
 
         if (p.hasPermission("admingui.vanish")) {
             if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
                 if (VanishAPI.isInvisible(p)) {
-                    Item.create(inv_player, "FEATHER", 1, 29, Message.getMessage("player_vanish_disabled"));
+                    Item.create(inv_player, "FEATHER", 1, 33, Message.getMessage("player_vanish_disabled"));
                 } else {
-                    Item.create(inv_player, "FEATHER", 1, 29, Message.getMessage("player_vanish_enabled"));
+                    Item.create(inv_player, "FEATHER", 1, 33, Message.getMessage("player_vanish_enabled"));
                 }
             } else {
-                Item.create(inv_player, "FEATHER", 1, 29, Message.getMessage("player_vanish_enabled"));
+                Item.create(inv_player, "FEATHER", 1, 33, Message.getMessage("player_vanish_enabled"));
             }
         }else{
-            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 29, Message.getMessage("permission"));
+            Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 33, Message.getMessage("permission"));
         }
 
         Item.create(inv_player, "REDSTONE_BLOCK", 1, 36, Message.getMessage("player_back"));
@@ -315,9 +333,9 @@ public class AdminUI {
         String inventory_actions_name = Message.getMessage("inventory_actions").replace("{player}", target.getName());
         target_player.put(p, target);
 
-        Inventory inv_actions = Bukkit.createInventory(null, 36, inventory_actions_name);
+        Inventory inv_actions = Bukkit.createInventory(null, 45, inventory_actions_name);
 
-        for(int i = 1; i < 36; i++){
+        for(int i = 1; i < 45; i++){
             Item.create(inv_actions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
@@ -435,7 +453,23 @@ public class AdminUI {
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 33, Message.getMessage("permission"));
         }
 
-        Item.create(inv_actions, "REDSTONE_BLOCK", 1, 36, Message.getMessage("actions_back"));
+        if(p.hasPermission("admingui.lightning.other")){
+            if(Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14")){
+                Item.create(inv_actions, "TRIDENT", 1, 35, Message.getMessage("actions_lightning"));
+            }else{
+                Item.create(inv_actions, "STICK", 1, 35, Message.getMessage("actions_lightning"));
+            }
+        }else{
+            Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 35, Message.getMessage("permission"));
+        }
+
+        if(p.hasPermission("admingui.firework.other")){
+            Item.create(inv_actions, "FIREWORK_ROCKET", 1, 37, Message.getMessage("actions_firework"));
+        }else{
+            Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 37, Message.getMessage("permission"));
+        }
+
+        Item.create(inv_actions, "REDSTONE_BLOCK", 1, 45, Message.getMessage("actions_back"));
 
         return inv_actions;
     }
@@ -791,6 +825,10 @@ public class AdminUI {
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_burn"))){
             p.setFireTicks(500);
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_burn"));
+        }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_lightning"))) {
+            p.getWorld().strikeLightning(p.getLocation());
+        }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_firework"))){
+            Fireworks.createRandom(p);
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_money"))){
             p.openInventory(GUI_Money(p, p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_vanish_enabled"))){
@@ -965,6 +1003,10 @@ public class AdminUI {
                     p.sendMessage(Message.getMessage("prefix") + Message.getMessage("vanish_required"));
                 }
                 p.closeInventory();
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_lightning"))){
+                target_player.getWorld().strikeLightning(target_player.getLocation());
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_firework"))){
+                Fireworks.createRandom(target_player);
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));
