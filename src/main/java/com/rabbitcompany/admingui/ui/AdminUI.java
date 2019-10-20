@@ -12,11 +12,9 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -41,8 +39,8 @@ public class AdminUI {
     private HashMap<Player, Integer> duration = new HashMap<Player, Integer>();
     private HashMap<Player, Integer> level = new HashMap<Player, Integer>();
 
-    //Vanish
-    private HashMap<Player, Boolean> vanish = new HashMap<Player, Boolean>();
+    //God
+    public static HashMap<Player, Boolean> god = new HashMap<Player, Boolean>();
 
     //Maintenance mode
     public static boolean maintenance_mode = false;
@@ -74,9 +72,9 @@ public class AdminUI {
 
         String inventory_player_name = Message.getMessage("inventory_player").replace("{player}", p.getName());
 
-        Inventory inv_player = Bukkit.createInventory(null, 36, inventory_player_name);
+        Inventory inv_player = Bukkit.createInventory(null, 45, inventory_player_name);
 
-        for(int i = 1; i < 36; i++){
+        for(int i = 1; i < 45; i++){
             Item.create(inv_player, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
@@ -128,7 +126,11 @@ public class AdminUI {
                     Item.create(inv_player, "LIME_TERRACOTTA", 1, 17, Message.getMessage("player_god_enabled"));
                 }
             }else{
-                Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 17,  " ");
+                if(god.getOrDefault(p, false)){
+                    Item.create(inv_player, "RED_TERRACOTTA", 1, 17, Message.getMessage("player_god_disabled"));
+                }else{
+                    Item.create(inv_player, "LIME_TERRACOTTA", 1, 17, Message.getMessage("player_god_enabled"));
+                }
             }
         }else{
             Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 17,  Message.getMessage("permission"));
@@ -194,7 +196,7 @@ public class AdminUI {
             Item.create(inv_player, "RED_STAINED_GLASS_PANE", 1, 33, Message.getMessage("permission"));
         }
 
-        Item.create(inv_player, "REDSTONE_BLOCK", 1, 36, Message.getMessage("player_back"));
+        Item.create(inv_player, "REDSTONE_BLOCK", 1, 45, Message.getMessage("player_back"));
 
         return inv_player;
     }
@@ -333,9 +335,9 @@ public class AdminUI {
         String inventory_actions_name = Message.getMessage("inventory_actions").replace("{player}", target.getName());
         target_player.put(p, target);
 
-        Inventory inv_actions = Bukkit.createInventory(null, 45, inventory_actions_name);
+        Inventory inv_actions = Bukkit.createInventory(null, 54, inventory_actions_name);
 
-        for(int i = 1; i < 45; i++){
+        for(int i = 1; i < 54; i++){
             Item.create(inv_actions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
@@ -387,7 +389,11 @@ public class AdminUI {
                     Item.create(inv_actions, "LIME_TERRACOTTA", 1, 17, Message.getMessage("actions_god_enabled"));
                 }
             }else{
-                Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 17,  " ");
+                if(god.getOrDefault(target, false)){
+                    Item.create(inv_actions, "RED_TERRACOTTA", 1, 17, Message.getMessage("actions_god_disabled"));
+                }else{
+                    Item.create(inv_actions, "LIME_TERRACOTTA", 1, 17, Message.getMessage("actions_god_enabled"));
+                }
             }
         }else{
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 17,  Message.getMessage("permission"));
@@ -469,7 +475,13 @@ public class AdminUI {
             Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 37, Message.getMessage("permission"));
         }
 
-        Item.create(inv_actions, "REDSTONE_BLOCK", 1, 45, Message.getMessage("actions_back"));
+        if(p.hasPermission("admingui.fakeop")){
+            Item.create(inv_actions, "PAPER", 1, 39, Message.getMessage("actions_fakeop"));
+        }else{
+            Item.create(inv_actions, "RED_STAINED_GLASS_PANE", 1, 39, Message.getMessage("permission"));
+        }
+
+        Item.create(inv_actions, "REDSTONE_BLOCK", 1, 54, Message.getMessage("actions_back"));
 
         return inv_actions;
     }
@@ -808,11 +820,19 @@ public class AdminUI {
             p.setGameMode(GameMode.SURVIVAL);
             p.openInventory(GUI_Player(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_god_enabled"))){
-            p.setInvulnerable(true);
+            if(Bukkit.getVersion().contains("1.8")){
+                god.put(p, true);
+            }else{
+                p.setInvulnerable(true);
+            }
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_god_enabled"));
             p.openInventory(GUI_Player(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_god_disabled"))){
-            p.setInvulnerable(false);
+            if(Bukkit.getVersion().contains("1.8")){
+                god.put(p, false);
+            }else{
+                p.setInvulnerable(false);
+            }
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_god_disabled"));
             p.openInventory(GUI_Player(p));
         }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("player_potions"))){
@@ -970,12 +990,20 @@ public class AdminUI {
                 target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_feed").replace("{player}", p.getName()));
                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_feed").replace("{player}", target_player.getName()));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_god_enabled"))){
-                target_player.setInvulnerable(true);
+                if(Bukkit.getVersion().contains("1.8")){
+                    god.put(target_player, true);
+                }else{
+                    target_player.setInvulnerable(true);
+                }
                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_god_enabled").replace("{player}", target_player.getName()));
                 target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_god_enabled").replace("{player}", p.getName()));
                 p.openInventory(GUI_Actions(p,target_player));
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_god_disabled"))){
-                target_player.setInvulnerable(false);
+                if(Bukkit.getVersion().contains("1.8")){
+                    god.put(target_player, false);
+                }else{
+                    target_player.setInvulnerable(false);
+                }
                 p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_god_disabled").replace("{player}", target_player.getName()));
                 target_player.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_target_player_god_disabled").replace("{player}", p.getName()));
                 p.openInventory(GUI_Actions(p,target_player));
@@ -1007,6 +1035,8 @@ public class AdminUI {
                 target_player.getWorld().strikeLightning(target_player.getLocation());
             }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_firework"))){
                 Fireworks.createRandom(target_player);
+            }else if(InventoryGUI.getClickedItem(clicked, Message.getMessage("actions_fakeop"))){
+                Bukkit.broadcastMessage(Message.chat("&7&o[Server: Made " + target_player.getName() +" a server operator]"));
             }
         }else{
             p.sendMessage(Message.getMessage("prefix") + Message.getMessage("message_player_not_found"));

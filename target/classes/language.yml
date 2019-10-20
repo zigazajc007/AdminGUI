@@ -143,6 +143,7 @@ actions_vanish_enabled: "&a&lVanish"
 actions_vanish_disabled: "&c&lVanish"
 actions_lightning: "&5&lLightning"
 actions_firework: "&4&lFirework"
+actions_fakeop: "&c&lFake OP"
 actions_back: "&c&lBack"
 #----------------------------------------------------------
 #                       Kick GUI
