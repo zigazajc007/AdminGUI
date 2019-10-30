@@ -22,7 +22,7 @@ import java.util.*;
 
 public class AdminUI {
 
-    public HashMap<Player, Player> target_player = new HashMap<Player, Player>();
+    public static HashMap<Player, Player> target_player = new HashMap<Player, Player>();
 
     //Ban
     private HashMap<Player, Integer> ban_years = new HashMap<Player, Integer>();

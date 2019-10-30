@@ -23,12 +23,12 @@ public class Admin implements CommandExecutor {
 
         if(player.hasPermission("admingui.admin")){
             if(args.length == 0){
-                adminUI.target_player.put(player, player);
+                AdminUI.target_player.put(player, player);
                 player.openInventory(adminUI.GUI_Main(player));
             }else if(args.length == 1){
                     Player target_player = Bukkit.getServer().getPlayer(args[0]);
                     if(target_player != null){
-                        adminUI.target_player.put(player, target_player);
+                        AdminUI.target_player.put(player, target_player);
                         if(player.getName().equals(target_player.getName())){
                             player.openInventory(adminUI.GUI_Player(player));
                         }else{
