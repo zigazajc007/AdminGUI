@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68fba916-2c46-44c3-b849-1655c59b9b44" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_bukkit_bukkit_1_14_4_R0_1_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bukkit_bukkit_1_14_4_R0_1_SNAPSHOT.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/AdminGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/AdminGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/ui/AdminUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/ui/AdminUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/commands/Admin.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/commands/Admin.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/listeners/InventoryClickListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/listeners/InventoryClickListener.class" afterDir="false" />
@@ -357,21 +357,29 @@
     <option name="LAST_COMMIT_MESSAGE" value="Fixed bug where GUI isn't detected when you do /admin &lt;target player&gt;" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1340" height="176" key="GridCell.Tab.0.bottom" timestamp="1576090429104">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="808" y="445" width="293" height="223" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583404316724">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="808" y="445" width="293" height="223" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1583404316724" />
+    <state width="1878" height="265" key="GridCell.Tab.0.bottom" timestamp="1583413472535">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1340" height="176" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1576090429104" />
-    <state width="1340" height="176" key="GridCell.Tab.0.center" timestamp="1576090429104">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1878" height="265" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1583413472535" />
+    <state width="1878" height="265" key="GridCell.Tab.0.center" timestamp="1583413472535">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1340" height="176" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1576090429104" />
-    <state width="1340" height="176" key="GridCell.Tab.0.left" timestamp="1576090429104">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1878" height="265" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1583413472535" />
+    <state width="1878" height="265" key="GridCell.Tab.0.left" timestamp="1583413472535">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1340" height="176" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1576090429104" />
-    <state width="1340" height="176" key="GridCell.Tab.0.right" timestamp="1576090429104">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1878" height="265" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1583413472535" />
+    <state width="1878" height="265" key="GridCell.Tab.0.right" timestamp="1583413472535">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1340" height="176" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1576090429104" />
+    <state width="1878" height="265" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1583413472535" />
   </component>
 </project>

@@ -40,7 +40,8 @@ public class AdminGUI extends JavaPlugin {
         mkdir();
         loadYamls();
 
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&7[&cAdmin GUI&7] &aPlugin is enabled!"));
+        //Bukkit.getConsoleSender().sendMessage(Message.chat("&7[&cAdmin GUI&7] &aPlugin is enabled!"));
+        info("&aEnabling");
 
         //bStats
         if(!Bukkit.getVersion().contains("1.8")){
@@ -70,7 +71,8 @@ public class AdminGUI extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&7[&cAdmin GUI&7] &4Plugin is disabled!"));
+        //Bukkit.getConsoleSender().sendMessage(Message.chat("&7[&cAdmin GUI&7] &4Plugin is disabled!"));
+        info("&4Disabling");
     }
 
     //VaultAPI
@@ -116,6 +118,26 @@ public class AdminGUI extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void info(String message){
+        Bukkit.getConsoleSender().sendMessage(Message.chat(""));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====[" + message + " &cAdminGUI&8]=====[]"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cInformation:"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Name: &bAdminGUI"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Developer: &bBlack1_TV"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b1.4.4"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cSupport:"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Discord: &bCrazy Rabbit#0001"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Mail: &bziga.zajc007@gmail.com"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Discord: &bhttps://discord.gg/hUNymXX"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====================================[]"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat(""));
     }
 
     public static AdminGUI getInstance(){
