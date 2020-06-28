@@ -1,7 +1,8 @@
 package com.rabbitcompany.admingui.utils.spawners.messages;
 
-public enum Message_Version_14 {
+public enum Message_Version_15 {
     spawner_bat,
+    spawner_bee,
     spawner_blaze,
     spawner_cat,
     spawner_cave_spider,
@@ -52,6 +53,5 @@ public enum Message_Version_14 {
     spawner_vindicator,
     spawner_witch,
     spawner_wolf,
-    spawner_zombie,
-    spawner_zombie_pigman
+    spawner_zombie
 }

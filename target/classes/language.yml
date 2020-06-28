@@ -197,6 +197,7 @@ potions_back: "&c&lBack"
 #                     Spawner GUI
 #----------------------------------------------------------
 spawner_bat: "&a&lBat"
+spawner_bee: "&6&lBee"
 spawner_blaze: "&c&lBlaze"
 spawner_cat: "&a&lCat"
 spawner_cave_spider: "&c&lCave Spider"

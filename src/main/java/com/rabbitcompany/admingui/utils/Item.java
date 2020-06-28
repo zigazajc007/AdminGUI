@@ -15,7 +15,7 @@ public class Item {
         ItemStack item;
         ArrayList lore = new ArrayList();
 
-        item = new ItemStack(XMaterial.matchXMaterial(material).parseMaterial(), amount, XMaterial.matchXMaterial(material).getData());
+        item = new ItemStack(XMaterial.matchXMaterial(material).get().parseMaterial(true), amount, XMaterial.matchXMaterial(material).get().getData());
 
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(Message.chat(displayName));
@@ -56,7 +56,7 @@ public class Item {
         ItemStack item;
         ArrayList lore = new ArrayList();
 
-        item = new ItemStack(XMaterial.matchXMaterial(material).parseMaterial(), amount, (short) byteId);
+        item = new ItemStack(XMaterial.matchXMaterial(material).get().parseMaterial(true), amount, (short) byteId);
 
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(Message.chat(displayName));
