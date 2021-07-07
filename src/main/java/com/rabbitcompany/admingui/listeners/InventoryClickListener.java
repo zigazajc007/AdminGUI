@@ -11,8 +11,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class InventoryClickListener implements Listener {
 
-    private AdminGUI adminGUI;
-    private AdminUI adminUI = new AdminUI();
+    private final AdminGUI adminGUI;
+    private final AdminUI adminUI = new AdminUI();
 
     public InventoryClickListener(AdminGUI plugin){
         adminGUI = plugin;

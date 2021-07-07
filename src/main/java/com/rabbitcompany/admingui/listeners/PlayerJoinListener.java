@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-    private AdminGUI adminGUI;
+    private final AdminGUI adminGUI;
 
     public PlayerJoinListener(AdminGUI plugin){
         adminGUI = plugin;

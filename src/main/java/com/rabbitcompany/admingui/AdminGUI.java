@@ -29,7 +29,7 @@ public class AdminGUI extends JavaPlugin {
     public static boolean vault = false;
 
     private File l = null;
-    private YamlConfiguration lang = new YamlConfiguration();
+    private final YamlConfiguration lang = new YamlConfiguration();
 
     @Override
     public void onEnable() {

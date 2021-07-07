@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 public class PlayerLoginListener implements Listener {
 
-    private AdminGUI adminGUI;
+    private final AdminGUI adminGUI;
 
     public PlayerLoginListener(AdminGUI plugin){
         adminGUI = plugin;

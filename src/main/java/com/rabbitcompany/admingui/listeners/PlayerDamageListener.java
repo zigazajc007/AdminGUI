@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class PlayerDamageListener implements Listener {
 
-    private AdminGUI adminGUI;
+    private final AdminGUI adminGUI;
 
     public PlayerDamageListener(AdminGUI plugin){
         adminGUI = plugin;
