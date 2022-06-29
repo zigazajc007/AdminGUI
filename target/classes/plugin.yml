@@ -1,5 +1,5 @@
 name: Admin-GUI
-version: 1.5.0
+version: 1.7.0
 main: com.rabbitcompany.admingui.AdminGUI
 api-version: 1.13
 authors: [RabbitCompany]

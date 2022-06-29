@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="68fba916-2c46-44c3-b849-1655c59b9b44" name="Default Changelist" comment="- Better 1.17 support&#10;- Updated Super Vanish API">
+    <list default="true" id="68fba916-2c46-44c3-b849-1655c59b9b44" name="Default Changelist" comment="- Added support for MC 1.18.x&#10;- Updated XMaterial">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/XMaterial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/XMaterial.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/ui/AdminUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rabbitcompany/admingui/ui/AdminUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/AdminGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/AdminGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/XMaterial$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/XMaterial$Data.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/XMaterial$Data.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/XMaterial.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/XMaterial.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/ui/AdminUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/rabbitcompany/admingui/ui/AdminUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,11 +56,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "last_opened_file_path": "/home/ziga/Documents/Projects/Minecraft/AdminGUI"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;last_opened_file_path&quot;: &quot;/home/ziga/Documents/Projects/Minecraft/AdminGUI&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="AdminGUI build" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
@@ -326,7 +335,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609443950117</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="- Added support for MC 1.18.x&#10;- Updated XMaterial">
+      <created>1653374693376</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1653374693376</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -366,6 +382,7 @@
     <MESSAGE value="Added 1.16 support." />
     <MESSAGE value="Updated XMaterial, Rewritten update checker and optimized some small features." />
     <MESSAGE value="Fixed update checker on 1.8 to 1.11 mc versions." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed update checker on 1.8 to 1.11 mc versions." />
+    <MESSAGE value="- Added support for MC 1.18.x&#10;- Updated XMaterial" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Added support for MC 1.18.x&#10;- Updated XMaterial" />
   </component>
 </project>

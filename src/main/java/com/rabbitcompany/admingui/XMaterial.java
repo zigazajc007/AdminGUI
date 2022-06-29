@@ -1490,7 +1490,7 @@ public enum XMaterial {
      *
      * @see #getLegacy()
      */
-    
+
     private final String[] legacy;
     /**
      * The cached Bukkit parsed material.
@@ -1498,7 +1498,7 @@ public enum XMaterial {
      * @see #parseMaterial()
      * @since 9.0.0
      */
-    
+
     private final Material material;
 
     XMaterial(int data, String... legacy) {
@@ -1565,7 +1565,7 @@ public enum XMaterial {
      * @return an optional that can be empty.
      * @since 5.1.0
      */
-    
+
     private static Optional<XMaterial> getIfPresent(String name) {
         return Optional.ofNullable(NAMES.get(name));
     }
@@ -1588,7 +1588,7 @@ public enum XMaterial {
      * @see #matchDefinedXMaterial(String, byte)
      * @since 1.0.0
      */
-    
+
     private static XMaterial requestOldXMaterial(String name, byte data) {
         String holder = name + data;
         XMaterial cache = NAME_CACHE.getIfPresent(holder);
@@ -1613,7 +1613,7 @@ public enum XMaterial {
      * @see #matchDefinedXMaterial(String, byte)
      * @since 2.0.0
      */
-    
+
     public static Optional<XMaterial> matchXMaterial(String name) {
         Validate.notEmpty(name, "Cannot match a material with null or empty material name");
         Optional<XMaterial> oldMatch = matchXMaterialWithData(name);
@@ -1637,7 +1637,7 @@ public enum XMaterial {
      * @see #matchXMaterial(String)
      * @since 3.0.0
      */
-    
+
     private static Optional<XMaterial> matchXMaterialWithData(String name) {
         int index = name.indexOf(':');
         if (index != -1) {
@@ -1662,7 +1662,7 @@ public enum XMaterial {
      * @see #matchXMaterial(ItemStack)
      * @since 2.0.0
      */
-    
+
     public static XMaterial matchXMaterial(Material material) {
         Objects.requireNonNull(material, "Cannot match null material");
         return matchDefinedXMaterial(material.name(), UNKNOWN_DATA_VALUE)
@@ -1680,7 +1680,7 @@ public enum XMaterial {
      * @see #matchXMaterial(Material)
      * @since 2.0.0
      */
-    
+
     @SuppressWarnings("deprecation")
     public static XMaterial matchXMaterial(ItemStack item) {
         Objects.requireNonNull(item, "Cannot match null ItemStack");
@@ -1732,7 +1732,7 @@ public enum XMaterial {
      * @see #matchXMaterial(ItemStack)
      * @since 3.0.0
      */
-    
+
     protected static Optional<XMaterial> matchDefinedXMaterial(String name, byte data) {
         // if (!Boolean.valueOf(Boolean.getBoolean(Boolean.TRUE.toString())).equals(Boolean.FALSE.booleanValue())) return null;
         Boolean duplicated = null;
@@ -1786,7 +1786,7 @@ public enum XMaterial {
      * which takes a really long time. Plugins should no longer support IDs. If you want, you can make a {@link Map} cache yourself.
      * This method obviously doesn't work for 1.13+ and will not be supported. This is only here for debugging purposes.
      */
-    
+
     @Deprecated
     public static Optional<XMaterial> matchXMaterial(int id, byte data) {
         if (id < 0 || id > MAX_ID || data < 0) return Optional.empty();
@@ -1807,7 +1807,7 @@ public enum XMaterial {
      * @return an enum name.
      * @since 2.0.0
      */
-    
+
     protected static String format(String name) {
         int len = name.length();
         char[] chs = new char[len];
@@ -1956,7 +1956,7 @@ public enum XMaterial {
      * @see #parseItem()
      * @since 3.0.0
      */
-    
+
     @SuppressWarnings("deprecation")
     public ItemStack setType(ItemStack item) {
         Objects.requireNonNull(item, "Cannot set material for null ItemStack");
@@ -1999,6 +1999,7 @@ public enum XMaterial {
      * @since 3.0.0
      */
     @Override
+
     public String toString() {
         return WordUtils.capitalize(this.name().replace('_', ' ').toLowerCase(Locale.ENGLISH));
     }
@@ -2048,7 +2049,7 @@ public enum XMaterial {
      * @see #setType(ItemStack)
      * @since 2.0.0
      */
-    
+
     @SuppressWarnings("deprecation")
     public ItemStack parseItem() {
         Material material = this.parseMaterial();
@@ -2062,6 +2063,7 @@ public enum XMaterial {
      * @return the material related to this XMaterial based on the server version.
      * @since 1.0.0
      */
+
     public Material parseMaterial() {
         return this.material;
     }

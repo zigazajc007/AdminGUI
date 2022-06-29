@@ -571,7 +571,7 @@ public class AdminUI {
             Item.create(inv_potions, "LIGHT_BLUE_STAINED_GLASS_PANE", 1, i, " ");
         }
 
-        if (Bukkit.getVersion().contains("1.18") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.13")) {
+        if (Bukkit.getVersion().contains("1.19") || Bukkit.getVersion().contains("1.18") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.13")) {
             for(Version_14 potion : Version_14.values()){
                 Item.create(inv_potions, "POTION", 1, potion.ordinal() + 1, Message.getMessage(potion.name()));
             }
@@ -601,7 +601,7 @@ public class AdminUI {
 
         target_player.put(p, target);
 
-        if(Bukkit.getVersion().contains("1.18") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.15")){
+        if(Bukkit.getVersion().contains("1.19") || Bukkit.getVersion().contains("1.18") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.15")){
             for(Material_Version_15 material : Material_Version_15.values()){
                 Item.create(inv_spawner, material.name(), 1, material.ordinal()+1, Message.getMessage(Message_Version_15.values()[material.ordinal()].name()));
             }
