@@ -9,8 +9,5 @@
         <module name="AdminGUI" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="AdminGUI" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
