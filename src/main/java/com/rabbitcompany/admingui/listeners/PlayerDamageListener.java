@@ -10,24 +10,24 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class PlayerDamageListener implements Listener {
 
-    private final AdminGUI adminGUI;
+	private final AdminGUI adminGUI;
 
-    public PlayerDamageListener(AdminGUI plugin){
-        adminGUI = plugin;
+	public PlayerDamageListener(AdminGUI plugin) {
+		adminGUI = plugin;
 
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
 
-    @EventHandler
-    public void onPlayerDamage(EntityDamageEvent event){
+	@EventHandler
+	public void onPlayerDamage(EntityDamageEvent event) {
 
-        if(Bukkit.getVersion().contains("1.8")){
-            if(event.getEntity() instanceof Player){
-                Player p = (Player) event.getEntity();
-                if(AdminUI.god.getOrDefault(p, false)){
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
+		if (Bukkit.getVersion().contains("1.8")) {
+			if (event.getEntity() instanceof Player) {
+				Player p = (Player) event.getEntity();
+				if (AdminUI.god.getOrDefault(p, false)) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
 }

@@ -5,8 +5,8 @@ import org.bukkit.entity.EntityType;
 
 public class Entity {
 
-    public static void spawn(Location loc, EntityType entity){
-        loc.getWorld().spawnEntity(loc,entity);
-    }
+	public static void spawn(Location loc, EntityType entity) {
+		loc.getWorld().spawnEntity(loc, entity);
+	}
 
 }

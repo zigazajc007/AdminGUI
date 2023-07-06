@@ -9,20 +9,20 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-    private final AdminGUI adminGUI;
+	private final AdminGUI adminGUI;
 
-    public PlayerJoinListener(AdminGUI plugin){
-        adminGUI = plugin;
+	public PlayerJoinListener(AdminGUI plugin) {
+		adminGUI = plugin;
 
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
 
-        if(event.getPlayer().hasPermission("admingui.admin") || event.getPlayer().isOp()){
-            Updater.sendPlayer(event.getPlayer());
-        }
+		if (event.getPlayer().hasPermission("admingui.admin") || event.getPlayer().isOp()) {
+			Updater.sendPlayer(event.getPlayer());
+		}
 
-    }
+	}
 }
